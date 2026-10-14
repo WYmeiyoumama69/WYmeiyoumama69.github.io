@@ -1,0 +1,2541 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>丁卓 · 个人主页</title>
+<meta name="description" content="丁卓 — 上海师范大学计算机专业学生，热爱运动与编程，专注 C / Java / C++ / MySQL。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<style>
+/* ============================================================
+   PERSONA 3 RELOAD 风格设计系统
+   Dark Hour：纯黑底 · 电光青 / 钴蓝 · 硬边斜切 · 网点纹理
+   ============================================================ */
+:root{
+  --p3-black:#000103;
+  --p3-cobalt:#0B3FA8;
+  --p3-blue:#1560EA;
+  --p3-cyan:#3FE0FF;
+  --p3-magenta:#FF2E6E;
+  --p3-yellow:#FFD23F;
+  --p3-white:#F4F8FF;
+
+  --radius-sm:0px;
+  --radius:2px;
+  --radius-lg:2px;
+  --shadow-sm:none;
+  --shadow:none;
+  --glow:rgba(63,224,255,.55);
+  --skew:-15deg;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --header-h:64px;
+  --maxw:1180px;
+  --font:"Inter","Segoe UI",-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --stro:"Impact","Haettenschweiler","Arial Narrow Bold","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --mono:"JetBrains Mono","Cascadia Code",Consolas,"Courier New",monospace;
+}
+html[data-theme="dark"]{
+  --bg:#000103;
+  --surface:rgba(10,17,34,.72);
+  --solid:#050A16;
+  --panel:#0A1120;
+  --line:rgba(63,224,255,.24);
+  --line-2:rgba(63,224,255,.5);
+  --halftone:rgba(63,224,255,.085);
+  --text:#F4F8FF;
+  --soft:#AFC4E2;
+  --mute:#66799B;
+  --accent:#3FE0FF;
+  --accent-ink:#000103;
+  --brand-1:#1560EA;
+  --brand-2:#3FE0FF;
+  --code-bg:rgba(63,224,255,.05);
+  color-scheme:dark;
+}
+html[data-theme="light"]{
+  --bg:#EDF1FA;
+  --surface:rgba(255,255,255,.94);
+  --solid:#FFFFFF;
+  --panel:#FFFFFF;
+  --line:rgba(11,63,168,.3);
+  --line-2:rgba(11,63,168,.6);
+  --halftone:rgba(11,63,168,.12);
+  --text:#030814;
+  --soft:#25335A;
+  --mute:#4E5D82;
+  --accent:#0F52D9;
+  --accent-ink:#FFFFFF;
+  --brand-1:#0B3FA8;
+  --brand-2:#0F52D9;
+  --code-bg:#F4F8FF;
+  color-scheme:light;
+}
+html[data-theme="dark"]{
+  --glow:rgba(63,224,255,.55);
+  --dim:rgba(63,224,255,.14);
+}
+html[data-theme="light"]{
+  --glow:rgba(21,96,234,.4);
+  --dim:rgba(11,63,168,.12);
+}
+
+/* ============================================================
+   基础
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 24px)}
+body{
+  margin:0;font-family:var(--font);background:var(--bg);color:var(--text);
+  line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  transition:background .3s var(--ease),color .3s var(--ease);
+}
+h1,h2,h3,h4{margin:0;line-height:1.08;font-weight:800;letter-spacing:-.005em}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+ul{margin:0;padding:0;list-style:none}
+img{max-width:100%;display:block}
+button,input,textarea,select{font:inherit;color:inherit}
+::selection{background:var(--accent);color:var(--accent-ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:26px}
+.mono{font-family:var(--mono)}
+
+/* 描边字：P3R 招牌的大字处理 */
+.stroke,.title,.num,.hobby .no,.post .pdate,.code-head .fname{
+  font-family:var(--stro);font-weight:800;letter-spacing:.01em;
+}
+.stroke{position:relative;display:inline-block;color:transparent;-webkit-text-stroke:2px var(--accent);z-index:1}
+.stroke::before{content:attr(data-text);position:absolute;left:3px;top:3px;z-index:-1;
+  -webkit-text-stroke:0;color:var(--accent)}
+.stroke.solid{color:var(--text);-webkit-text-stroke:0}
+.stroke.solid::before{color:var(--text)}
+
+/* 斜纹带 */
+.stripes{
+  position:absolute;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 24px);
+  opacity:.5;
+}
+.stripes.solid{background:repeating-linear-gradient(90deg,var(--brand-1) 0 14px,transparent 14px 30px)}
+
+/* ============================================================
+   背景：Dark Hour 夜空 + 网点 + 光斑
+   ============================================================ */
+.bg-decor{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none;background:var(--bg)}
+.bg-decor::before{
+  content:"";position:absolute;inset:0;
+  background-image:radial-gradient(var(--halftone) 1.4px,transparent 1.4px);
+  background-size:9px 9px;
+  mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.35) 45%,#000 100%);
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,rgba(0,0,0,.35) 45%,#000 100%);
+}
+.bg-decor::after{
+  content:"";position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(115deg,transparent 0 46px,var(--dim) 46px 47px),
+    repeating-linear-gradient(65deg,transparent 0 88px,var(--dim) 88px 89px);
+  mask-image:radial-gradient(120% 80% at 85% 0%,#000 0%,transparent 62%);
+  -webkit-mask-image:radial-gradient(120% 80% at 85% 0%,#000 0%,transparent 62%);
+  opacity:.8;
+}
+.orb{position:absolute;border-radius:50%;filter:blur(100px);opacity:.5}
+.orb.o1{width:620px;height:620px;background:var(--p3-cobalt);top:-240px;left:-160px}
+.orb.o2{width:440px;height:440px;background:var(--p3-cyan);top:60px;right:-160px;opacity:.2}
+.orb.o3{width:420px;height:420px;background:var(--p3-magenta);bottom:-200px;left:34%;opacity:.14}
+html[data-theme="light"] .orb{opacity:.16}
+
+/* ============================================================
+   顶部导航
+   ============================================================ */
+.progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:120;background:var(--accent);box-shadow:0 0 14px var(--glow)}
+.topbar{
+  position:sticky;top:0;z-index:100;height:var(--header-h);display:flex;align-items:center;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);
+  border-bottom:1px solid var(--line);
+}
+.topbar::after{
+  content:"";position:absolute;left:0;right:0;bottom:-4px;height:3px;
+  background:repeating-linear-gradient(90deg,var(--accent) 0 12px,transparent 12px 28px);
+  opacity:.45;
+}
+.topbar .wrap{display:flex;align-items:center;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;flex-shrink:0;font-weight:800;letter-spacing:.01em}
+.brand .dot{
+  width:38px;height:38px;display:grid;place-items:center;transform:skewX(var(--skew));
+  background:var(--accent);color:var(--accent-ink);font-family:var(--stro);font-size:19px;font-weight:800;
+  border:2px solid var(--text);
+}
+.brand .dot span{display:block;transform:skewX(calc(-1 * var(--skew)))}
+.brand .name{font-family:var(--stro);font-size:19px;letter-spacing:.03em}
+
+.nav{display:flex;gap:2px;margin-left:auto;align-items:center}
+.nav a{
+  position:relative;padding:7px 14px;font-size:14px;font-weight:650;color:var(--soft);
+  letter-spacing:.02em;transition:color .18s,background .18s;
+}
+.nav a::before{
+  content:"";position:absolute;left:4px;right:4px;top:0;bottom:0;z-index:-1;
+  background:var(--accent);transform:skewX(var(--skew)) scaleX(0);transform-origin:left;
+  transition:transform .26s var(--ease);
+}
+.nav a:hover{color:var(--text)}
+.nav a:hover::before{transform:skewX(var(--skew)) scaleX(.22)}
+.nav a.active{color:var(--accent-ink)}
+.nav a.active::before{transform:skewX(var(--skew)) scaleX(1)}
+html[data-theme="light"] .nav a.active{color:#fff}
+
+.tools{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.icon-btn{
+  height:38px;min-width:40px;padding:0 12px;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:transparent;border:2px solid var(--line);color:var(--soft);
+  transform:skewX(var(--skew));
+  transition:background .2s,color .2s,border-color .2s,transform .2s var(--ease);
+}
+.icon-btn > *{display:block;transform:skewX(calc(-1 * var(--skew)))}
+.icon-btn:hover{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);transform:skewX(var(--skew)) translateY(-2px)}
+.icon-btn svg{width:17px;height:17px}
+.lang-btn{font-size:13px;font-weight:800;letter-spacing:.08em}
+html[data-theme="dark"] .i-sun{display:block}
+html[data-theme="dark"] .i-moon{display:none}
+html[data-theme="light"] .i-sun{display:none}
+html[data-theme="light"] .i-moon{display:block}
+.burger{display:none}
+
+@media(max-width:960px){
+  .nav{
+    position:fixed;inset:var(--header-h) 0 auto 0;flex-direction:column;align-items:stretch;
+    gap:0;padding:10px 0 18px;background:var(--solid);border-bottom:2px solid var(--accent);
+    transform:translateY(-130%);transition:transform .34s var(--ease);
+  }
+  .nav.open{transform:none}
+  .nav a{padding:13px 26px;font-size:16px}
+  .nav a::before{left:0;right:auto;width:4px;top:6px;bottom:6px;transform:none;background:var(--accent);opacity:0}
+  .nav a:hover::before,.nav a.active::before{transform:none;opacity:1;width:4px}
+  .nav a.active{color:var(--text)}
+  .burger{display:inline-flex}
+}
+
+/* ============================================================
+   首屏 Hero
+   ============================================================ */
+.hero{position:relative;padding:clamp(46px,7vw,92px) 0 clamp(48px,6vw,84px);overflow:hidden}
+.hero::before{
+  content:"";position:absolute;right:-6%;top:-8%;width:62%;height:150%;z-index:0;
+  background:var(--brand-1);opacity:.1;
+  clip-path:polygon(30% 0,100% 0,100% 100%,0 100%);pointer-events:none;
+}
+.hero::after{
+  content:"";position:absolute;right:2%;bottom:0;width:34%;height:150px;z-index:0;
+  background:repeating-linear-gradient(90deg,var(--accent) 0 10px,transparent 10px 26px);
+  opacity:.3;transform:skewX(var(--skew));pointer-events:none;
+}
+html[data-theme="light"] .hero::before{background:var(--brand-1);opacity:.07}
+.hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.12fr .88fr;gap:clamp(28px,4.4vw,58px);align-items:center}
+@media(max-width:960px){.hero-grid{grid-template-columns:1fr;gap:40px}}
+
+.pill{
+  display:inline-flex;align-items:center;gap:9px;padding:5px 14px 5px 6px;
+  background:var(--surface);border:2px solid var(--line-2);font-size:12.5px;font-weight:650;color:var(--soft);
+  transform:skewX(var(--skew));letter-spacing:.04em;text-transform:uppercase;
+}
+.pill > *{transform:skewX(calc(-1 * var(--skew)))}
+.pill .live{width:7px;height:7px;background:var(--accent);animation:pulse 1.6s infinite}
+html[data-theme="dark"] .pill .live{box-shadow:0 0 10px var(--accent)}
+@keyframes pulse{50%{opacity:.25}}
+
+.hero h1{margin:22px 0 0;font-size:clamp(1.5rem,3.4vw,2.2rem);font-weight:750;color:var(--soft);letter-spacing:0}
+.hero h1 .line2{
+  display:block;margin-top:2px;
+  font-family:var(--stro);font-weight:800;font-size:clamp(4rem,13vw,8.6rem);line-height:.88;
+  letter-spacing:.01em;
+}
+.type-row{
+  margin-top:20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-height:2.1em;
+  font-size:clamp(1rem,2.2vw,1.3rem);font-weight:700;
+}
+.type-row .pre{color:var(--mute);font-weight:600}
+.type-wrap{color:var(--accent);font-family:var(--stro);letter-spacing:.02em;font-size:1.15em}
+.caret{display:inline-block;width:3px;height:1.05em;background:var(--accent);vertical-align:-.14em;margin-left:2px;animation:blink .9s steps(2,start) infinite}
+@keyframes blink{50%{opacity:0}}
+
+.lede{margin-top:22px;font-size:1.02rem;color:var(--soft);max-width:58ch}
+.lede b{color:var(--text);font-weight:700}
+.cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;padding:14px 26px;cursor:pointer;
+  border:2px solid transparent;font-size:14.5px;font-weight:750;letter-spacing:.02em;
+  transform:skewX(var(--skew));
+  transition:transform .2s var(--ease),background .2s,color .2s,border-color .2s,box-shadow .2s;
+}
+.btn > *{transform:skewX(calc(-1 * var(--skew)))}
+.btn svg{width:16px;height:16px}
+.btn-primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn-primary:hover{transform:skewX(var(--skew)) translate(-4px,-4px);box-shadow:6px 6px 0 0 var(--text)}
+.btn-ghost{background:transparent;border-color:var(--line-2);color:var(--text)}
+.btn-ghost:hover{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);transform:skewX(var(--skew)) translate(-4px,-4px);box-shadow:6px 6px 0 0 var(--brand-1)}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:46px;max-width:600px;border-left:2px solid var(--line-2)}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{padding:14px 16px 16px;border-right:1px solid var(--line);position:relative}
+.stat::before{content:"";position:absolute;left:0;top:0;width:18px;height:4px;background:var(--accent)}
+.stat .num{font-family:var(--stro);font-size:2rem;line-height:1;color:var(--text)}
+.stat .num .suf{color:var(--accent)}
+.stat .lbl{font-size:11.5px;color:var(--mute);margin-top:6px;letter-spacing:.06em;text-transform:uppercase;font-weight:650}
+
+.hero-cap{
+  margin-top:26px;font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.22em;
+  color:var(--mute);text-transform:uppercase;
+}
+
+/* 代码窗 —— 终端面板 */
+.code-shell{position:relative}
+@media(min-width:701px){
+  .code-shell{transform:rotate(-1.2deg);transition:transform .5s var(--ease)}
+  .code-shell:hover{transform:rotate(0) translateY(-6px)}
+}
+.code-shell::before{
+  content:"";position:absolute;inset:16px -16px -16px 16px;background:var(--brand-1);z-index:-1;
+  border:2px solid var(--accent);
+}
+html[data-theme="light"] .code-shell::before{background:rgba(11,63,168,.12);border-color:var(--line-2)}
+html[data-theme="light"] .code-card{border-color:var(--brand-1);box-shadow:8px 8px 0 0 rgba(11,63,168,.14)}
+.code-shell::after{
+  content:"";position:absolute;right:-30px;top:-30px;width:104px;height:104px;z-index:-1;
+  background:repeating-linear-gradient(90deg,var(--accent) 0 8px,transparent 8px 20px);opacity:.55;
+}
+.code-card{position:relative;background:var(--solid);border:2px solid var(--accent);overflow:hidden}
+html[data-theme="dark"] .code-card{box-shadow:0 0 50px -10px var(--glow)}
+.code-head{display:flex;align-items:center;gap:8px;padding:11px 14px;background:var(--brand-1);border-bottom:2px solid var(--accent)}
+.code-head .dots{display:flex;gap:6px}
+.code-head .dots i{width:10px;height:10px;display:block;background:var(--p3-black)}
+.code-head .dots i:nth-child(2){background:var(--p3-yellow)}
+.code-head .dots i:nth-child(3){background:var(--accent)}
+.code-head .fname{margin-left:6px;font-size:13px;color:#fff;letter-spacing:.05em}
+.code-body{
+  margin:0;padding:18px 20px 22px;font-family:var(--mono);font-size:12.8px;line-height:1.85;
+  background:var(--code-bg);overflow-x:auto;
+}
+.code-body .k{color:var(--p3-cyan)}
+.code-body .t{color:var(--p3-yellow)}
+.code-body .s{color:#7DF9A6}
+.code-body .n{color:#FF9EC4}
+.code-body .c{color:var(--mute);font-style:italic}
+.code-body .f{color:#B69CFF}
+html[data-theme="light"] .code-body .k{color:#0B63C4}
+html[data-theme="light"] .code-body .t{color:#9A5B00}
+html[data-theme="light"] .code-body .s{color:#0E7A3C}
+html[data-theme="light"] .code-body .n{color:#B0196B}
+html[data-theme="light"] .code-body .f{color:#5B21B6}
+
+/* ============================================================
+   区块与标题
+   ============================================================ */
+section{padding:clamp(58px,7.5vw,100px) 0;position:relative}
+.sec-head{position:relative;max-width:720px;margin-bottom:clamp(30px,4.2vw,50px);padding-left:22px}
+.sec-head::before{content:"";position:absolute;left:0;top:4px;bottom:6px;width:6px;background:var(--accent);transform:skewX(var(--skew))}
+.eyebrow{
+  display:inline-block;padding:3px 12px;background:var(--accent);color:var(--accent-ink);
+  font-size:11.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  transform:skewX(var(--skew));
+}
+.eyebrow span{display:inline-block;transform:skewX(calc(-1 * var(--skew)))}
+.sec-head h2{
+  margin:16px 0 14px;font-family:var(--stro);font-weight:800;
+  font-size:clamp(2rem,5.6vw,3.6rem);line-height:1;letter-spacing:.005em;
+}
+.sec-head p{color:var(--soft);font-size:1rem;max-width:60ch}
+.sec-head.center{margin-inline:auto;text-align:center;padding-left:0}
+.sec-head.center::before{left:50%;transform:translateX(-50%) skewX(var(--skew));top:auto;bottom:-14px;width:80px;height:5px}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}
+}
+
+/* 硬卡片 */
+.card{background:var(--surface);border:2px solid var(--line);transition:border-color .2s,transform .2s var(--ease)}
+.card:hover{border-color:var(--accent)}
+
+/* ============================================================
+   关于我
+   ============================================================ */
+.about{display:grid;grid-template-columns:1.32fr .98fr;gap:clamp(26px,3.6vw,50px);align-items:start}
+@media(max-width:920px){.about{grid-template-columns:1fr}}
+.about-text p{color:var(--soft);margin-bottom:16px}
+.about-text p strong{color:var(--text);font-weight:750;background:var(--dim);padding:1px 5px;border-bottom:2px solid var(--accent)}
+.about-facts{display:grid;gap:8px;margin-top:28px}
+.fact{
+  display:flex;gap:14px;align-items:flex-start;padding:14px 16px;position:relative;
+  background:var(--surface);border:2px solid var(--line);border-left-width:6px;
+  transition:border-color .2s,transform .2s var(--ease);
+}
+.fact:hover{border-color:var(--accent);transform:translateX(5px)}
+.fact .ic{
+  width:34px;height:34px;flex-shrink:0;display:grid;place-items:center;
+  background:var(--accent);color:var(--accent-ink);transform:skewX(var(--skew));
+}
+.fact .ic svg{width:16px;height:16px;transform:skewX(calc(-1 * var(--skew)))}
+.fact .k{font-size:11px;color:var(--mute);letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.fact .v{font-size:14.5px;font-weight:650;margin-top:3px;color:var(--text)}
+
+.portrait{position:relative;padding:26px;background:var(--surface);border:2px solid var(--accent);overflow:hidden}
+html[data-theme="dark"] .portrait{box-shadow:0 0 40px -14px var(--glow)}
+.portrait::before{
+  content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;
+  background:repeating-linear-gradient(90deg,var(--accent) 0 9px,transparent 9px 22px);opacity:.22;
+}
+.avatar{
+  width:104px;height:104px;display:grid;place-items:center;margin-bottom:18px;
+  background:var(--brand-1);border:3px solid var(--accent);
+  font-family:var(--stro);font-size:44px;color:#fff;transform:skewX(var(--skew));
+}
+.avatar span{display:block;transform:skewX(calc(-1 * var(--skew)))}
+.portrait h3{font-family:var(--stro);font-size:1.5rem}
+.portrait .role{color:var(--soft);font-size:13.5px;margin-top:5px}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.tag{
+  font-size:12px;padding:4px 11px;background:transparent;border:1.5px solid var(--line-2);
+  color:var(--soft);font-weight:600;letter-spacing:.03em;transition:all .18s;
+}
+.tag:hover{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.portrait .quote{
+  margin-top:20px;padding-top:16px;border-top:1px dashed var(--line-2);
+  font-size:13.5px;color:var(--mute);
+}
+
+/* ============================================================
+   技能
+   ============================================================ */
+.skill-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:960px){.skill-cols{grid-template-columns:1fr}}
+.skill-col{padding:24px 22px;background:var(--surface);border:2px solid var(--line);position:relative}
+.skill-col::before{content:"";position:absolute;left:0;top:0;width:100%;height:5px;background:var(--accent)}
+.skill-col h3{display:flex;align-items:center;gap:11px;font-size:1.05rem;margin-bottom:22px;font-weight:750}
+.skill-col h3 .ic{
+  width:32px;height:32px;display:grid;place-items:center;flex-shrink:0;
+  background:var(--brand-1);color:#fff;transform:skewX(var(--skew));
+}
+.skill-col h3 .ic svg{width:16px;height:16px;transform:skewX(calc(-1 * var(--skew)))}
+.skill{margin-bottom:18px}
+.skill:last-child{margin-bottom:0}
+.skill .top{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;margin-bottom:8px;gap:10px}
+.skill .top span:first-child{font-weight:650}
+.skill .top .pct{font-family:var(--stro);font-size:14px;color:var(--accent);letter-spacing:.04em}
+.bar{height:8px;background:var(--dim);border:1px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width 1.1s var(--ease)}
+
+/* ============================================================
+   项目
+   ============================================================ */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.chip{
+  padding:9px 20px;cursor:pointer;background:transparent;border:2px solid var(--line-2);
+  color:var(--soft);font-size:13.5px;font-weight:700;letter-spacing:.03em;
+  transform:skewX(var(--skew));transition:all .18s var(--ease);
+}
+.chip > span{display:inline-block;transform:skewX(calc(-1 * var(--skew)))}
+.chip:hover{border-color:var(--accent);color:var(--text);transform:skewX(var(--skew)) translateY(-2px)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:-5px 5px 0 0 var(--brand-1)}
+
+.projects{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:1020px){.projects{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.projects{grid-template-columns:1fr}}
+.proj{
+  position:relative;display:flex;flex-direction:column;cursor:pointer;overflow:hidden;
+  background:var(--surface);border:2px solid var(--line);
+  transition:transform .22s var(--ease),border-color .2s,box-shadow .22s;
+}
+.proj::before{
+  content:"";position:absolute;right:-30px;bottom:-30px;width:110px;height:110px;z-index:0;
+  background:repeating-linear-gradient(90deg,var(--accent) 0 8px,transparent 8px 20px);
+  opacity:0;transition:opacity .3s;
+}
+.proj:hover::before{opacity:.4}
+.proj:hover{border-color:var(--accent);transform:translate(-4px,-4px);box-shadow:7px 7px 0 0 var(--brand-1)}
+html[data-theme="light"] .proj:hover{box-shadow:7px 7px 0 0 var(--accent)}
+.proj.hide{display:none}
+.proj .no{
+  position:absolute;right:16px;top:-22px;z-index:3;font-family:var(--stro);font-size:3rem;line-height:1;
+  color:transparent;-webkit-text-stroke:2px var(--line-2);opacity:.6;
+  transition:opacity .25s,-webkit-text-stroke-color .25s;
+}
+.proj:hover .no{-webkit-text-stroke-color:var(--accent);opacity:1}
+.proj .thumb{
+  position:relative;height:120px;display:grid;place-items:center;margin:18px 18px 0;
+  background:var(--brand-1);border:2px solid var(--accent);overflow:hidden;z-index:1;
+}
+.proj .thumb::before{
+  content:"";position:absolute;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.5) 1.2px,transparent 1.2px);background-size:7px 7px;opacity:.45;
+}
+.proj .thumb::after{
+  content:"";position:absolute;left:-20%;top:0;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);
+  transform:skewX(var(--skew));
+}
+.proj .thumb span{position:relative;z-index:2;font-size:38px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));transition:transform .3s var(--ease)}
+.proj:hover .thumb span{transform:scale(1.16) rotate(-8deg)}
+.proj-body{position:relative;z-index:1;display:flex;flex-direction:column;flex:1;padding:18px 20px 20px;background:var(--solid);margin:14px 18px 18px;border-top:3px solid var(--accent)}
+.proj h3{font-size:1.06rem;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;font-weight:800}
+.proj h3 svg{width:16px;height:16px;color:var(--mute);flex-shrink:0;margin-top:3px;transition:transform .22s var(--ease),color .2s}
+.proj:hover h3 svg{transform:translate(3px,-3px);color:var(--accent)}
+.proj .desc{font-size:13.4px;color:var(--soft);margin:10px 0 16px;flex:1}
+.proj .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding-top:14px;border-top:1px solid var(--line)}
+.proj .meta .tag{font-size:11px;padding:3px 9px}
+.proj .star{display:flex;align-items:center;gap:5px;margin-left:auto;font-family:var(--stro);font-size:13px;color:var(--p3-yellow);letter-spacing:.04em}
+.proj .star svg{width:13px;height:13px;fill:var(--p3-yellow)}
+
+/* 弹层 */
+.modal{
+  position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:24px;
+  background:rgba(0,1,3,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  opacity:0;visibility:hidden;transition:opacity .24s var(--ease),visibility .24s;
+}
+.modal.open{opacity:1;visibility:visible}
+.modal-box{
+  position:relative;width:min(740px,100%);max-height:86vh;overflow-y:auto;padding:32px;
+  background:var(--solid);border:2px solid var(--accent);
+  transform:translateY(20px);transition:transform .3s var(--ease);
+}
+html[data-theme="dark"] .modal-box{box-shadow:0 0 60px -12px var(--glow)}
+.modal.open .modal-box{transform:none}
+.modal-box::before{
+  content:"";position:absolute;left:0;top:0;width:110px;height:6px;background:var(--accent);
+}
+.modal-box::after{
+  content:"";position:absolute;right:-24px;top:24px;width:70px;height:70px;
+  background:repeating-linear-gradient(90deg,var(--accent) 0 8px,transparent 8px 18px);opacity:.4;z-index:-1;
+}
+.modal-box .m-close{
+  position:sticky;top:0;float:right;width:38px;height:38px;cursor:pointer;
+  display:grid;place-items:center;background:transparent;border:2px solid var(--line-2);color:var(--soft);
+  transition:all .18s;
+}
+.modal-box .m-close:hover{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.modal-box .m-close svg{width:15px;height:15px}
+.modal-box .m-eyebrow{
+  display:inline-block;padding:3px 11px;background:var(--accent);color:var(--accent-ink);
+  font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+}
+.modal-box h3{margin:14px 0 16px;font-family:var(--stro);font-size:1.9rem;line-height:1.05}
+.modal-box p{color:var(--soft);font-size:14.4px;margin-bottom:14px}
+.modal-box ul.bullets{display:grid;gap:10px;margin:20px 0}
+.modal-box ul.bullets li{display:flex;gap:12px;font-size:14px;color:var(--soft);padding-left:2px}
+.modal-box ul.bullets li::before{
+  content:"";width:8px;height:8px;flex-shrink:0;margin-top:9px;background:var(--accent);transform:skewX(var(--skew));
+}
+.modal-box .m-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:20px;padding-top:18px;border-top:2px solid var(--line)}
+
+/* ============================================================
+   时间轴
+   ============================================================ */
+.timeline{position:relative;padding-left:40px}
+.timeline::before{
+  content:"";position:absolute;left:6px;top:10px;bottom:10px;width:3px;background:var(--line-2);
+}
+.tl-item{position:relative;padding-bottom:22px;padding-left:6px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{
+  content:"";position:absolute;left:-40px;top:20px;width:16px;height:16px;background:var(--accent);
+  border:2px solid var(--bg);transform:skewX(var(--skew));transition:transform .25s var(--ease);
+}
+.tl-item:hover::before{transform:skewX(var(--skew)) scale(1.28)}
+.tl-card{
+  position:relative;padding:22px 24px;background:var(--surface);border:2px solid var(--line);border-left-width:6px;
+  transition:border-color .2s,transform .22s var(--ease);
+}
+.tl-card:hover{border-color:var(--accent);transform:translateX(6px)}
+.tl-date{
+  display:inline-block;padding:4px 12px;background:var(--brand-1);color:#fff;
+  font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.06em;
+  transform:skewX(var(--skew));margin-bottom:12px;
+}
+.tl-date span{display:inline-block;transform:skewX(calc(-1 * var(--skew)))}
+.tl-card h3{font-size:1.12rem;font-weight:800}
+.tl-card .org{font-size:13.5px;color:var(--accent);font-weight:700;margin-top:5px;letter-spacing:.02em}
+.tl-card p{font-size:13.8px;color:var(--soft);margin-top:10px}
+
+/* ============================================================
+   爱好
+   ============================================================ */
+.hobbies{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:960px){.hobbies{grid-template-columns:1fr}}
+.hobby{
+  position:relative;padding:24px;background:var(--surface);border:2px solid var(--line);overflow:hidden;
+  transition:transform .24s var(--ease),border-color .2s,box-shadow .24s;
+}
+.hobby:hover{border-color:var(--accent);transform:translate(-4px,-4px);box-shadow:7px 7px 0 0 var(--brand-1)}
+html[data-theme="light"] .hobby:hover{box-shadow:7px 7px 0 0 var(--accent)}
+.hobby .no{
+  position:absolute;right:6px;top:-10px;font-family:var(--stro);font-size:4.2rem;line-height:1;
+  color:transparent;-webkit-text-stroke:2px var(--line-2);opacity:.55;transition:opacity .25s,-webkit-text-stroke-color .25s;
+}
+.hobby:hover .no{-webkit-text-stroke-color:var(--accent);opacity:1}
+.hobby .big{
+  position:relative;display:grid;place-items:center;width:76px;height:76px;margin-bottom:18px;
+  background:var(--brand-1);border:2px solid var(--accent);font-size:36px;
+  transition:transform .3s var(--ease);
+}
+.hobby:hover .big{transform:rotate(-8deg) scale(1.06)}
+.hobby h3{position:relative;font-family:var(--stro);font-size:1.35rem}
+.hobby p{position:relative;font-size:13.5px;color:var(--soft);margin-top:10px}
+.hobby .meter{
+  position:relative;display:flex;justify-content:space-between;align-items:center;gap:12px;
+  margin-top:18px;padding-top:14px;border-top:2px solid var(--line);
+  font-size:11.5px;color:var(--mute);letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+}
+.hobby .meter b{font-family:var(--stro);font-size:16px;color:var(--accent);letter-spacing:.04em}
+
+/* ============================================================
+   博客
+   ============================================================ */
+.posts{display:grid;gap:12px}
+.post{
+  position:relative;display:grid;grid-template-columns:120px 1fr auto;gap:24px;align-items:center;
+  padding:20px 24px;cursor:pointer;background:var(--surface);border:2px solid var(--line);overflow:hidden;
+  transition:transform .22s var(--ease),border-color .2s,box-shadow .22s;
+}
+.post::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:0;background:var(--accent);transition:width .22s var(--ease);
+}
+.post:hover{border-color:var(--accent);transform:translateX(6px);box-shadow:-7px 7px 0 0 var(--brand-1)}
+html[data-theme="light"] .post:hover{box-shadow:-7px 7px 0 0 var(--accent)}
+.post:hover::before{width:5px}
+@media(max-width:780px){.post{grid-template-columns:1fr;gap:14px}}
+.post .pdate{
+  display:inline-block;justify-self:start;padding:5px 12px;background:var(--brand-1);color:#fff;
+  font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.05em;transform:skewX(var(--skew));
+}
+.post .pdate span{display:inline-block;transform:skewX(calc(-1 * var(--skew)))}
+.post h3{font-size:1.1rem;font-weight:800;margin-bottom:8px}
+.post:hover h3{color:var(--accent)}
+.post .pex{font-size:13.4px;color:var(--soft);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.post .ptags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.post .ptags span{font-size:11px;padding:3px 9px;border:1.5px solid var(--line-2);color:var(--mute);font-weight:650}
+.post .go{
+  width:44px;height:44px;display:grid;place-items:center;flex-shrink:0;
+  background:transparent;border:2px solid var(--line-2);color:var(--soft);transform:skewX(var(--skew));
+  transition:all .2s;
+}
+.post .go svg{width:16px;height:16px;transform:skewX(calc(-1 * var(--skew)))}
+.post:hover .go{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.post .go svg{transition:transform .2s var(--ease)}
+.post:hover .go svg{transform:skewX(calc(-1 * var(--skew))) translateX(2px)}
+
+.modal-box .reading{font-size:14.4px;color:var(--soft);line-height:1.85}
+.modal-box .reading h4{
+  font-family:var(--stro);font-size:1.2rem;color:var(--text);margin:24px 0 10px;
+  padding-left:14px;border-left:5px solid var(--accent);letter-spacing:.02em;
+}
+.modal-box .reading ul{display:grid;gap:9px;margin:14px 0}
+.modal-box .reading ul li{display:flex;gap:11px;font-size:14px}
+.modal-box .reading ul li::before{content:"▸";color:var(--accent);flex-shrink:0;font-weight:800}
+.modal-box .reading code{
+  font-family:var(--mono);font-size:12.4px;padding:2px 6px;background:var(--code-bg);
+  border:1px solid var(--line);color:var(--accent);
+}
+
+/* ============================================================
+   联系
+   ============================================================ */
+.contact-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(24px,3.6vw,48px);align-items:start}
+@media(max-width:920px){.contact-grid{grid-template-columns:1fr}}
+.contact-list{display:grid;gap:10px;margin-top:24px}
+.cline{
+  display:flex;align-items:center;gap:15px;padding:15px 17px;position:relative;
+  background:var(--surface);border:2px solid var(--line);
+  transition:border-color .2s,transform .2s var(--ease);
+}
+.cline:hover{border-color:var(--accent);transform:translateX(6px)}
+.cline .ic{
+  width:40px;height:40px;flex-shrink:0;display:grid;place-items:center;
+  background:var(--brand-1);color:#fff;transform:skewX(var(--skew));
+}
+.cline .ic svg{width:17px;height:17px;transform:skewX(calc(-1 * var(--skew)))}
+.cline .k{font-size:11px;color:var(--mute);letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.cline .v{font-size:14.5px;font-weight:650;word-break:break-all;margin-top:2px}
+.socials{display:flex;gap:9px;margin-top:22px;flex-wrap:wrap}
+.social{
+  width:46px;height:46px;display:grid;place-items:center;background:transparent;
+  border:2px solid var(--line-2);color:var(--soft);transform:skewX(var(--skew));
+  transition:all .2s var(--ease);
+}
+.social svg{width:19px;height:19px;transform:skewX(calc(-1 * var(--skew)))}
+.social:hover{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);transform:skewX(var(--skew)) translateY(-5px)}
+
+.form{position:relative;padding:28px;background:var(--surface);border:2px solid var(--accent)}
+html[data-theme="dark"] .form{box-shadow:0 0 40px -16px var(--glow)}
+.form::before{content:"";position:absolute;left:0;top:0;width:100%;height:6px;background:var(--brand-1)}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:11.5px;font-weight:750;color:var(--soft);margin-bottom:8px;letter-spacing:.1em;text-transform:uppercase}
+.field label .req{color:var(--p3-magenta)}
+.field input,.field textarea{
+  width:100%;padding:13px 15px;background:var(--bg);border:2px solid var(--line);
+  color:var(--text);font-size:14.5px;outline:none;
+  transition:border-color .18s,box-shadow .18s,background .3s;
+}
+.field textarea{resize:vertical;min-height:128px;font-family:inherit}
+.field input:focus,.field textarea:focus{border-color:var(--accent);box-shadow:5px 5px 0 0 var(--brand-1)}
+.field.bad input,.field.bad textarea{border-color:var(--p3-magenta);box-shadow:5px 5px 0 0 rgba(255,46,110,.35)}
+.field .err{font-size:12px;color:var(--p3-magenta);margin-top:6px;display:none;font-weight:650}
+.field.bad .err{display:block}
+.form .btn{width:100%;justify-content:center;margin-top:6px}
+.form .btn:hover{box-shadow:6px 6px 0 0 var(--brand-1)}
+.form-note{font-size:12px;color:var(--mute);margin-top:14px;text-align:center}
+
+.toast{
+  position:fixed;left:50%;bottom:32px;z-index:300;max-width:calc(100vw - 40px);
+  display:flex;align-items:center;gap:12px;padding:14px 24px;
+  background:var(--solid);border:2px solid var(--accent);color:var(--text);
+  font-size:14px;font-weight:700;transform:translate(-50%,140%);
+  transition:transform .4s var(--ease);
+}
+html[data-theme="dark"] .toast{box-shadow:0 0 40px -10px var(--glow)}
+.toast.show{transform:translate(-50%,0)}
+.toast .ic{width:24px;height:24px;flex-shrink:0;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink)}
+.toast .ic svg{width:13px;height:13px}
+
+/* 响应式收尾 */
+@media(max-width:900px){
+  .stripes{display:none}
+  .hero::before{width:80%;opacity:.08}
+  .code-shell::after{right:-18px;top:-18px;width:76px;height:76px}
+}
+@media(max-width:700px){
+  .code-shell::before{display:none}
+  .code-shell::after{display:none}
+  .code-card{max-width:100%;overflow:hidden}
+  .hero::after{display:none}
+}
+@media(max-width:560px){
+  .wrap{padding-inline:18px}
+  .sec-head{padding-left:16px}
+  .hero h1 .line2{font-size:clamp(3.2rem,17vw,4.4rem)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .modal-box{padding:24px 20px}
+  .form{padding:22px 18px}
+  .post{padding:18px}
+}
+
+/* ============================================================
+   数字分身 / Digital Avatar
+   ============================================================ */
+.avatar-console{
+  position:relative;display:grid;grid-template-columns:340px 1fr;gap:0;
+  background:var(--surface);border:2px solid var(--accent);overflow:hidden;
+}
+html[data-theme="dark"] .avatar-console{box-shadow:0 0 60px -18px var(--glow)}
+.avatar-console::before{
+  content:"";position:absolute;left:0;top:0;width:120px;height:6px;background:var(--accent);z-index:5;
+}
+@media(max-width:900px){.avatar-console{grid-template-columns:1fr}}
+
+/* --- 左：分身形象 --- */
+.av-side{
+  position:relative;padding:26px 24px 24px;border-right:2px solid var(--line);
+  background:linear-gradient(180deg,var(--brand-1) 0%,transparent 62%);
+}
+html[data-theme="light"] .av-side{background:linear-gradient(180deg,rgba(11,63,168,.14) 0%,transparent 62%)}
+@media(max-width:900px){.av-side{border-right:0;border-bottom:2px solid var(--line)}}
+.av-side::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(var(--halftone) 1.3px,transparent 1.3px);background-size:8px 8px;opacity:.9;
+}
+.av-status{
+  position:relative;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:4px 12px;
+  background:var(--accent);color:var(--accent-ink);font-size:10.5px;font-weight:800;
+  letter-spacing:.16em;text-transform:uppercase;transform:skewX(var(--skew));
+}
+.av-status > span{display:inline-block;transform:skewX(calc(-1 * var(--skew)))}
+.av-status .live{width:6px;height:6px;background:var(--accent-ink);animation:pulse 1.4s infinite}
+
+.av-stage{position:relative;z-index:2;margin:20px auto 0;width:210px;height:210px;display:grid;place-items:center}
+.av-stage::before{
+  content:"";position:absolute;inset:0;border:2px solid var(--line-2);border-radius:50%;
+  animation:avSpin 18s linear infinite;
+}
+.av-stage::after{
+  content:"";position:absolute;inset:-14px;border:1px dashed var(--line-2);border-radius:50%;
+  opacity:.55;animation:avSpin 26s linear infinite reverse;
+}
+@keyframes avSpin{to{transform:rotate(360deg)}}
+#avCanvas{position:relative;z-index:2;width:180px;height:180px;display:block}
+
+.av-meta{position:relative;z-index:2;margin-top:18px}
+.av-name{font-family:var(--stro);font-size:2.1rem;line-height:1;letter-spacing:.01em}
+.av-id{font-family:var(--mono);font-size:11px;color:var(--mute);letter-spacing:.14em;margin-top:7px;text-transform:uppercase}
+.av-bars{display:grid;gap:9px;margin-top:18px;padding-top:16px;border-top:2px solid var(--line)}
+.av-bar{display:grid;grid-template-columns:64px 1fr 34px;align-items:center;gap:9px;font-size:10.5px;color:var(--mute);letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.av-bar .track{height:6px;background:var(--dim);border:1px solid var(--line);overflow:hidden}
+.av-bar .track i{display:block;height:100%;background:var(--accent);transition:width .7s var(--ease)}
+.av-bar b{font-family:var(--mono);font-size:11px;color:var(--accent);text-align:right}
+
+/* --- 右：对话区 --- */
+.av-main{position:relative;display:flex;flex-direction:column;min-height:520px}
+.av-head{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 20px;
+  background:var(--brand-1);border-bottom:2px solid var(--accent);
+}
+.av-head .dots{display:flex;gap:6px}
+.av-head .dots i{width:10px;height:10px;display:block;background:var(--p3-black)}
+.av-head .dots i:nth-child(2){background:var(--p3-yellow)}
+.av-head .dots i:nth-child(3){background:var(--accent)}
+.av-head .title{font-family:var(--stro);font-size:15px;color:#fff;letter-spacing:.06em}
+.av-head .tagline{font-size:11px;color:rgba(255,255,255,.72);font-family:var(--mono);letter-spacing:.06em}
+.av-tools{margin-left:auto;display:flex;gap:7px}
+.av-tool{
+  display:inline-flex;align-items:center;gap:6px;padding:5px 12px;cursor:pointer;
+  background:transparent;border:1.5px solid rgba(255,255,255,.4);color:#fff;
+  font-size:11px;font-weight:750;letter-spacing:.06em;transition:all .18s;
+}
+.av-tool:hover{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.av-tool[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.av-tool svg{width:13px;height:13px}
+
+.av-chat{
+  flex:1;overflow-y:auto;padding:22px 20px;display:flex;flex-direction:column;gap:16px;
+  max-height:430px;background:var(--code-bg);scroll-behavior:smooth;
+}
+.av-chat::-webkit-scrollbar{width:8px}
+.av-chat::-webkit-scrollbar-track{background:var(--dim)}
+.av-chat::-webkit-scrollbar-thumb{background:var(--accent)}
+
+.msg{display:flex;gap:12px;max-width:88%;animation:msgIn .35s var(--ease) both}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}}
+.msg .face{
+  width:38px;height:38px;flex-shrink:0;display:grid;place-items:center;
+  border:2px solid var(--line-2);font-family:var(--stro);font-size:16px;
+  background:var(--surface-2);color:var(--text);
+}
+.msg.bot .face{background:var(--brand-1);border-color:var(--accent);color:#fff}
+.msg .bubble{
+  position:relative;padding:13px 16px;font-size:14px;line-height:1.75;
+  background:var(--solid);border:2px solid var(--line);color:var(--text);
+}
+.msg.bot .bubble{border-left:5px solid var(--accent)}
+.msg.user{margin-left:auto;flex-direction:row-reverse}
+.msg.user .bubble{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+html[data-theme="light"] .msg.user .bubble{color:#fff}
+.msg.user .face{background:var(--surface-2);border-color:var(--line-2);color:var(--text)}
+.msg .bubble b{font-weight:800}
+.msg .bubble .hl{background:var(--dim);border-bottom:2px solid var(--accent);padding:0 3px;font-weight:700}
+.msg .bubble code{font-family:var(--mono);font-size:12.4px;padding:1px 5px;background:var(--code-bg);border:1px solid var(--line)}
+
+.av-typing{display:flex;gap:4px;align-items:center;height:18px}
+.av-typing i{width:7px;height:7px;background:var(--accent);display:block;animation:typeBounce 1.1s infinite}
+.av-typing i:nth-child(2){animation-delay:.16s}
+.av-typing i:nth-child(3){animation-delay:.32s}
+@keyframes typeBounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
+
+.av-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.av-chip{
+  padding:6px 13px;cursor:pointer;background:transparent;border:1.5px solid var(--line-2);
+  color:var(--soft);font-size:12px;font-weight:650;transition:all .16s;
+}
+.av-chip:hover{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);transform:translateY(-2px)}
+.av-chip:disabled{opacity:.4;cursor:default;pointer-events:none}
+
+.av-input{display:flex;gap:10px;padding:14px 16px;border-top:2px solid var(--line);background:var(--surface)}
+.av-input input{
+  flex:1;padding:12px 15px;background:var(--bg);border:2px solid var(--line);color:var(--text);
+  font-size:14px;outline:none;transition:border-color .18s,box-shadow .18s;
+}
+.av-input input:focus{border-color:var(--accent);box-shadow:4px 4px 0 0 var(--brand-1)}
+.av-input input::placeholder{color:var(--mute)}
+.av-send{
+  display:inline-flex;align-items:center;gap:8px;padding:0 22px;cursor:pointer;
+  background:var(--accent);border:2px solid var(--accent);color:var(--accent-ink);
+  font-size:13.5px;font-weight:750;transform:skewX(var(--skew));transition:all .18s;
+}
+.av-send > *{transform:skewX(calc(-1 * var(--skew)))}
+.av-send:hover{background:var(--brand-1);border-color:var(--brand-1);color:#fff}
+.av-send svg{width:15px;height:15px}
+.av-foot{padding:9px 16px;border-top:1px solid var(--line);font-size:11px;color:var(--mute);font-family:var(--mono);letter-spacing:.05em;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
+/* ============================================================
+   页脚
+   ============================================================ */
+footer{position:relative;border-top:2px solid var(--line);padding:34px 0;margin-top:16px}
+footer::before{
+  content:"";position:absolute;left:0;top:-2px;width:180px;height:2px;background:var(--accent);
+}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--mute)}
+.foot strong{color:var(--text);font-weight:750}
+.top-btn{
+  display:inline-flex;align-items:center;gap:9px;padding:10px 20px;cursor:pointer;
+  background:transparent;border:2px solid var(--line-2);color:var(--soft);font-size:13px;font-weight:700;
+  transform:skewX(var(--skew));transition:all .18s;
+}
+.top-btn > *{transform:skewX(calc(-1 * var(--skew)))}
+.top-btn:hover{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.top-btn svg{width:14px;height:14px}
+</style>
+</head>
+<body>
+
+<!-- 背景装饰 -->
+<div class="bg-decor" aria-hidden="true">
+  <div class="grid"></div>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+</div>
+<div class="progress" id="progress"></div>
+
+<!-- SVG 图标库 -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+  <symbol id="i-arrow-ur" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 7 8.2 5.5a1.5 1.5 0 0 0 1.6 0L21 7"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7 0-.7 0-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.9 4.6 19 4.9 19 4.9c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.7-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/></symbol>
+  <symbol id="i-bilibili" viewBox="0 0 24 24" fill="currentColor"><path d="M5.8 2.2 9 5.4h6L18.2 2.2a1 1 0 1 1 1.4 1.4L17.4 5.8H19a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-9a3 3 0 0 1 3-3h1.6L4.4 3.6a1 1 0 1 1 1.4-1.4zM5 8a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H5zm3.5 3a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1zm7 0a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1z"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 2.5 6 2.5 2.5 0 0 1 4.98 3.5zM3 8.98h4V21H3zM9 8.98h3.8v1.64h.06A4.2 4.2 0 0 1 16.6 8.7c3.2 0 3.8 2.1 3.8 4.9V21h-4v-6.5c0-1.55-.03-3.55-2.16-3.55-2.17 0-2.5 1.7-2.5 3.44V21H9z"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1 5.3 5.3l-8.4 8.4a2 2 0 0 1-2.8 0l-2.5-2.5a2 2 0 0 1 0-2.8z"/><path d="M6 6l3 3"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 9 12 4 2 9l10 5 10-5z"/><path d="M6 11.5V17c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 5.6a5 5 0 0 0-7.1 0L12 7.3l-1.7-1.7a5 5 0 1 0-7.1 7.1L12 21.5l8.8-8.8a5 5 0 0 0 0-7.1z"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5-5.8-3-5.8 3 1.1-6.5L2.6 9.4l6.5-.9z"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></symbol>
+  <symbol id="i-run" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M7 21l2-5 3-2-1-4-4 2M13 9l-2 4 3 3 1 5M9 14l-3 1"/></symbol>
+  <symbol id="i-volume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4M21 4v5h-5"/></symbol>
+</svg>
+
+<!-- ============================ 顶部导航 ============================ -->
+<header class="topbar" id="topbar">
+  <div class="wrap">
+    <a href="#home" class="brand">
+      <span class="dot"><span>丁</span></span>
+      <span data-i18n="brand.name">丁卓</span>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="#home" class="active" data-i18n="nav.home">首页</a>
+      <a href="#about" data-i18n="nav.about">关于</a>
+      <a href="#skills" data-i18n="nav.skills">技能</a>
+      <a href="#projects" data-i18n="nav.projects">项目</a>
+      <a href="#timeline" data-i18n="nav.timeline">经历</a>
+      <a href="#hobbies" data-i18n="nav.hobbies">爱好</a>
+      <a href="#avatar" data-i18n="nav.avatar">分身</a>
+      <a href="#blog" data-i18n="nav.blog">博客</a>
+      <a href="#contact" data-i18n="nav.contact">联系</a>
+    </nav>
+    <div class="tools">
+      <button class="icon-btn lang-btn" id="langBtn" title="切换语言 / Switch language">
+        <span id="langLabel">EN</span>
+      </button>
+      <button class="icon-btn" id="themeBtn" title="切换主题 / Toggle theme" aria-label="Toggle theme">
+        <svg class="i-sun"><use href="#i-sun"/></svg>
+        <svg class="i-moon"><use href="#i-moon"/></svg>
+      </button>
+      <button class="icon-btn burger" id="burger" aria-label="Menu">
+        <svg><use href="#i-menu"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- ============================ 首屏 ============================ -->
+<section class="hero" id="home">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="pill reveal">
+        <span class="live"></span>
+        <span data-i18n="hero.status">在读 · 计算机科学与技术</span>
+      </span>
+
+      <h1 class="reveal">
+        <span data-i18n="hero.hi">你好，我是</span>
+        <span class="line2 stroke" data-i18n="hero.name" data-text="丁卓">丁卓</span>
+      </h1>
+
+      <div class="type-row reveal">
+        <span class="pre" data-i18n="hero.prefix">我是一名</span>
+        <span class="type-wrap"><span id="typed"></span><span class="caret"></span></span>
+      </div>
+
+      <p class="lede reveal" data-i18n-html="hero.lede">
+        上海师范大学计算机专业学生，喜欢把逻辑写成代码，也喜欢把汗水留在跑道上。
+        目前在钻研 <b>C / Java / C++</b> 与 <b>MySQL</b>，相信扎实的基础能撑起长期主义的成长。
+      </p>
+
+      <div class="cta reveal">
+        <a class="btn btn-primary" href="#projects">
+          <svg><use href="#i-code"/></svg>
+          <span data-i18n="hero.cta1">看看我的项目</span>
+        </a>
+        <a class="btn btn-ghost" href="#contact">
+          <svg><use href="#i-mail"/></svg>
+          <span data-i18n="hero.cta2">联系我</span>
+        </a>
+      </div>
+
+      <div class="stats reveal">
+        <div class="stat"><div class="num"><span class="count" data-to="3">0</span><span class="suf">+</span></div><div class="lbl" data-i18n="stats.s1">年编程学习</div></div>
+        <div class="stat"><div class="num"><span class="count" data-to="6">0</span></div><div class="lbl" data-i18n="stats.s2">项目实践</div></div>
+        <div class="stat"><div class="num"><span class="count" data-to="4">0</span></div><div class="lbl" data-i18n="stats.s3">技术栈方向</div></div>
+        <div class="stat"><div class="num"><span class="count" data-to="800">0</span><span class="suf">+</span></div><div class="lbl" data-i18n="stats.s4">公里跑量</div></div>
+      </div>
+
+      <div class="hero-cap reveal" data-i18n="hero.caption">// CODE BY DAY · RUN BY DUSK</div>
+    </div>
+
+    <div class="reveal">
+      <div class="code-shell">
+      <div class="code-card">
+        <div class="code-head">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="fname">DingZhuo.java</span>
+        </div>
+        <pre class="code-body"><code><span class="c">// 一个热爱运动的计算机学生</span>
+<span class="k">public class</span> <span class="t">DingZhuo</span> <span class="k">implements</span> <span class="t">Student</span> {
+
+  <span class="k">private final</span> <span class="t">String</span> school <span class="k">=</span> <span class="s">"上海师范大学"</span>;
+  <span class="k">private final</span> <span class="t">String</span>[] stack <span class="k">=</span> {
+      <span class="s">"C"</span>, <span class="s">"Java"</span>, <span class="s">"C++"</span>, <span class="s">"MySQL"</span>
+  };
+  <span class="k">private final</span> <span class="t">String</span>[] hobbies <span class="k">=</span> {
+      <span class="s">"中长跑"</span>, <span class="s">"羽毛球"</span>, <span class="s">"看动漫"</span>
+  };
+
+  <span class="k">@Override</span>
+  <span class="k">public</span> <span class="t">String</span> <span class="f">grow</span>() {
+      <span class="k">while</span> (alive) {
+          learn();  <span class="c">// 保持热爱</span>
+          run();    <span class="c">// 保持清醒</span>
+      }
+      <span class="k">return</span> <span class="s">"better me"</span>;
+  }
+}</code></pre>
+      </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 关于我 ============================ -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span data-i18n="about.eyebrow">关于我</span></span>
+      <h2 data-i18n="about.title">把想法写成代码，把坚持跑成习惯</h2>
+    </div>
+
+    <div class="about">
+      <div class="about-text reveal">
+        <p data-i18n-html="about.p1">
+          我是 <strong>丁卓</strong>，上海师范大学计算机专业的学生。对我来说，编程最有意思的地方在于
+          「用确定的逻辑解决不确定的问题」——从一段跑不通的代码到顺畅运行的瞬间，是这个专业给我的最大快乐。
+        </p>
+        <p data-i18n-html="about.p2">
+          学习路径上，我从 <strong>C 语言</strong>入门，理解了内存与指针的底层逻辑；随后用
+          <strong>Java</strong> 建立起面向对象的思维方式，用 <strong>C++</strong> 感受性能与抽象的平衡；
+          再用 <strong>MySQL</strong> 把数据真正落下来。四门语言/技术互相印证，让我既有底层的耐心，也有工程的视角。
+        </p>
+        <p data-i18n-html="about.p3">
+          课业之外，我是跑道上的人。<strong>中长跑</strong>教会我的不是速度，而是节奏与配速感——
+          知道什么时候该冲，什么时候该稳。这种能力同样适用于写代码：不追求一次写完，只追求每天都往前一点。
+        </p>
+
+        <div class="about-facts">
+          <div class="fact">
+            <span class="ic"><svg><use href="#i-cap"/></svg></span>
+            <div><div class="k" data-i18n="about.f1k">学校 / 专业</div><div class="v" data-i18n="about.f1v">上海师范大学 · 计算机专业</div></div>
+          </div>
+          <div class="fact">
+            <span class="ic"><svg><use href="#i-target"/></svg></span>
+            <div><div class="k" data-i18n="about.f2k">当前目标</div><div class="v" data-i18n="about.f2v">夯实算法与数据库基础，做出完整的后端项目</div></div>
+          </div>
+          <div class="fact">
+            <span class="ic"><svg><use href="#i-zap"/></svg></span>
+            <div><div class="k" data-i18n="about.f3k">正在学习</div><div class="v" data-i18n="about.f3v">数据结构与算法 · MySQL 优化 · Spring 生态</div></div>
+          </div>
+          <div class="fact">
+            <span class="ic"><svg><use href="#i-heart"/></svg></span>
+            <div><div class="k" data-i18n="about.f4k">日常状态</div><div class="v" data-i18n="about.f4v">白天上课写代码，傍晚操场上跑几圈</div></div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="portrait reveal">
+        <div class="avatar">丁</div>
+        <h3 data-i18n="brand.name">丁卓</h3>
+        <div class="role" data-i18n="about.role">计算机专业学生 · 运动爱好者</div>
+        <div class="tag-row">
+          <span class="tag">C</span>
+          <span class="tag">Java</span>
+          <span class="tag">C++</span>
+          <span class="tag">MySQL</span>
+          <span class="tag" data-i18n="about.tag5">中长跑</span>
+          <span class="tag" data-i18n="about.tag6">羽毛球</span>
+          <span class="tag" data-i18n="about.tag7">动漫</span>
+        </div>
+        <p class="quote" data-i18n="about.quote">"跑得慢没关系，别停下来就行。"</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 技能 ============================ -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span data-i18n="skills.eyebrow">技能栈</span></span>
+      <h2 data-i18n="skills.title">正在打磨的技术能力</h2>
+      <p data-i18n="skills.sub">下面是我目前的学习进度自评——不是终点，而是当前的位置。</p>
+    </div>
+
+    <div class="skill-cols">
+      <div class="skill-col reveal">
+        <h3><span class="ic"><svg><use href="#i-code"/></svg></span><span data-i18n="skills.c1">编程语言</span></h3>
+        <div id="skillList1"></div>
+      </div>
+      <div class="skill-col reveal">
+        <h3><span class="ic"><svg><use href="#i-db"/></svg></span><span data-i18n="skills.c2">数据与后端</span></h3>
+        <div id="skillList2"></div>
+      </div>
+      <div class="skill-col reveal">
+        <h3><span class="ic"><svg><use href="#i-tool"/></svg></span><span data-i18n="skills.c3">工具与方法</span></h3>
+        <div id="skillList3"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 项目 ============================ -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span data-i18n="projects.eyebrow">项目作品</span></span>
+      <h2 data-i18n="projects.title">做过的一些东西</h2>
+      <p data-i18n="projects.sub">点击卡片可以查看实现思路与踩坑记录。</p>
+    </div>
+
+    <div class="stripes" style="right:0;top:34%;width:150px;height:16px" aria-hidden="true"></div>
+
+    <div class="filters reveal" id="filters"></div>
+    <div class="projects" id="projectGrid"></div>
+  </div>
+</section>
+
+<!-- ============================ 时间轴 ============================ -->
+<section id="timeline">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span data-i18n="tl.eyebrow">经历</span></span>
+      <h2 data-i18n="tl.title">我的成长轨迹</h2>
+    </div>
+    <div class="timeline" id="timelineList"></div>
+  </div>
+</section>
+
+<!-- ============================ 爱好 ============================ -->
+<section id="hobbies">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span data-i18n="hb.eyebrow">爱好</span></span>
+      <h2 data-i18n="hb.title">代码之外，我是这样的人</h2>
+      <p data-i18n="hb.sub">运动对我不是消遣，而是维持专注力的方式。</p>
+    </div>
+    <div class="hobbies" id="hobbyGrid"></div>
+  </div>
+</section>
+
+<!-- ============================ 数字分身 ============================ -->
+<section id="avatar">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span data-i18n="av.eyebrow">数字分身</span></span>
+      <h2 data-i18n="av.title">和我的数字分身聊聊</h2>
+      <p data-i18n="av.sub">它是基于我本人信息生成的对话人格，可以回答关于我的学习、技能、项目和爱好。所有推理都在你的浏览器里完成，离线可用。</p>
+    </div>
+
+    <div class="avatar-console reveal">
+      <!-- 分身形象 -->
+      <div class="av-side">
+        <span class="av-status"><span class="live"></span><span data-i18n="av.online">在线</span></span>
+        <div class="av-stage"><canvas id="avCanvas" width="360" height="360" role="img" aria-label="Digital avatar"></canvas></div>
+        <div class="av-meta">
+          <div class="av-name stroke solid" data-text="丁卓" data-i18n="av.name">丁卓</div>
+          <div class="av-id" data-i18n="av.id">UNIT-DZ-01 // 人格副本</div>
+        </div>
+        <div class="av-bars">
+          <div class="av-bar"><span data-i18n="av.b1">语言</span><div class="track"><i data-w="92"></i></div><b>92</b></div>
+          <div class="av-bar"><span data-i18n="av.b2">逻辑</span><div class="track"><i data-w="85"></i></div><b>85</b></div>
+          <div class="av-bar"><span data-i18n="av.b3">耐力</span><div class="track"><i data-w="88"></i></div><b>88</b></div>
+        </div>
+      </div>
+
+      <!-- 对话区 -->
+      <div class="av-main">
+        <div class="av-head">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="title">DIGITAL AVATAR</span>
+          <span class="tagline" data-i18n="av.tagline">// 离线人格引擎 v1.0</span>
+          <div class="av-tools">
+            <button class="av-tool" id="avVoice" aria-pressed="false" title="朗读回复 / Read aloud">
+              <svg><use href="#i-volume"/></svg><span data-i18n="av.voice">语音</span>
+            </button>
+            <button class="av-tool" id="avReset" title="重置对话 / Reset">
+              <svg><use href="#i-refresh"/></svg><span data-i18n="av.reset">重置</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="av-chat" id="avChat" aria-live="polite"></div>
+
+        <div class="av-input">
+          <input id="avInput" type="text" autocomplete="off" placeholder="问我任何关于丁卓的问题…" aria-label="Message">
+          <button class="av-send" id="avSend"><span data-i18n="av.send">发送</span><svg><use href="#i-send"/></svg></button>
+        </div>
+        <div class="av-foot">
+          <span data-i18n="av.foot1">关键词加权检索 · 无网络请求 · 支持中英双语</span>
+          <span data-i18n="av.foot2">试试问：你会什么语言？</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 博客 ============================ -->
+<section id="blog">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span data-i18n="blog.eyebrow">学习笔记</span></span>
+      <h2 data-i18n="blog.title">最近写下的思考</h2>
+      <p data-i18n="blog.sub">把学到的东西写下来，才算真的学会。点击可展开阅读。</p>
+    </div>
+    <div class="posts" id="postList"></div>
+  </div>
+</section>
+
+<!-- ============================ 联系 ============================ -->
+<section id="contact">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span data-i18n="ct.eyebrow">联系</span></span>
+      <h2 data-i18n="ct.title">有想法？欢迎聊聊</h2>
+      <p data-i18n="ct.sub">无论是技术交流、组队做项目，还是约一场球、一起跑步，我都很乐意。</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="contact-list">
+          <div class="cline">
+            <span class="ic"><svg><use href="#i-mail"/></svg></span>
+            <div><div class="k" data-i18n="ct.emailK">邮箱</div><div class="v">dingzhuo@example.com</div></div>
+          </div>
+          <div class="cline">
+            <span class="ic"><svg><use href="#i-phone"/></svg></span>
+            <div><div class="k" data-i18n="ct.phoneK">电话</div><div class="v">+86 138-0000-0000</div></div>
+          </div>
+          <div class="cline">
+            <span class="ic"><svg><use href="#i-pin"/></svg></span>
+            <div><div class="k" data-i18n="ct.locK">所在城市</div><div class="v" data-i18n="ct.locV">中国 · 上海</div></div>
+          </div>
+          <div class="cline">
+            <span class="ic"><svg><use href="#i-cap"/></svg></span>
+            <div><div class="k" data-i18n="ct.schoolK">就读院校</div><div class="v" data-i18n="ct.schoolV">上海师范大学</div></div>
+          </div>
+        </div>
+        <div class="socials">
+          <a class="social" href="#" title="GitHub" aria-label="GitHub"><svg><use href="#i-github"/></svg></a>
+          <a class="social" href="#" title="Bilibili" aria-label="Bilibili"><svg><use href="#i-bilibili"/></svg></a>
+          <a class="social" href="#" title="LinkedIn" aria-label="LinkedIn"><svg><use href="#i-linkedin"/></svg></a>
+          <a class="social" href="mailto:dingzhuo@example.com" title="Email" aria-label="Email"><svg><use href="#i-mail"/></svg></a>
+        </div>
+      </div>
+
+      <form class="form reveal" id="contactForm" novalidate>
+        <div class="field" id="f-name">
+          <label for="in-name"><span data-i18n="ct.lName">你的名字</span> <span class="req">*</span></label>
+          <input id="in-name" name="name" type="text" placeholder="张三" autocomplete="name">
+          <div class="err" data-i18n="ct.eName">请填写你的名字</div>
+        </div>
+        <div class="field" id="f-email">
+          <label for="in-email"><span data-i18n="ct.lEmail">邮箱</span> <span class="req">*</span></label>
+          <input id="in-email" name="email" type="email" placeholder="you@example.com" autocomplete="email">
+          <div class="err" data-i18n="ct.eEmail">请输入有效的邮箱地址</div>
+        </div>
+        <div class="field" id="f-msg">
+          <label for="in-msg"><span data-i18n="ct.lMsg">想说的话</span> <span class="req">*</span></label>
+          <textarea id="in-msg" name="message" placeholder=""></textarea>
+          <div class="err" data-i18n="ct.eMsg">内容至少 5 个字</div>
+        </div>
+        <button class="btn btn-primary" type="submit">
+          <svg><use href="#i-send"/></svg>
+          <span data-i18n="ct.send">发送消息</span>
+        </button>
+        <p class="form-note" data-i18n="ct.note">纯静态页面，提交后会唤起你的邮件客户端。也可以直接复制上面邮箱。</p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+<!-- ============================ 页脚 ============================ -->
+<footer>
+  <div class="wrap foot">
+    <span data-i18n="ft.left">© 2025 丁卓 · 用 HTML / CSS / JavaScript 手写而成</span>
+    <button class="top-btn" id="toTop">
+      <svg><use href="#i-arrow-up"/></svg>
+      <span data-i18n="ft.top">回到顶部</span>
+    </button>
+  </div>
+</footer>
+
+<!-- 弹层 -->
+<div class="modal" id="modal">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<!-- 提示 -->
+<div class="toast" id="toast">
+  <span class="ic"><svg><use href="#i-check"/></svg></span>
+  <span id="toastMsg"></span>
+</div>
+
+<script>
+/* ============================================================
+   1. 全站文案数据（中 / 英）
+   ============================================================ */
+const I18N = {
+  zh: {
+    "brand.name":"丁卓",
+    "nav.home":"首页","nav.about":"关于","nav.skills":"技能","nav.projects":"项目",
+    "nav.timeline":"经历","nav.hobbies":"爱好","nav.avatar":"分身","nav.blog":"博客","nav.contact":"联系",
+
+    "hero.status":"在读 · 计算机科学与技术",
+    "hero.hi":"你好，我是",
+    "hero.name":"丁卓",
+    "hero.prefix":"我是一名",
+    "hero.types":["计算机专业学生","中长跑爱好者","后端方向学习者","羽毛球常客","动漫追番人"],
+    "hero.lede":"上海师范大学计算机专业学生，喜欢把逻辑写成代码，也喜欢把汗水留在跑道上。目前在钻研 <b>C / Java / C++</b> 与 <b>MySQL</b>，相信扎实的基础能撑起长期主义的成长。",
+    "hero.cta1":"看看我的项目","hero.cta2":"联系我",
+    "hero.caption":"// 白天写代码 · 傍晚去跑步",
+    "stats.s1":"年编程学习","stats.s2":"项目实践","stats.s3":"技术栈方向","stats.s4":"公里跑量",
+
+    "about.eyebrow":"关于我",
+    "about.title":"把想法写成代码，把坚持跑成习惯",
+    "about.p1":"我是 <strong>丁卓</strong>，上海师范大学计算机专业的学生。对我来说，编程最有意思的地方在于「用确定的逻辑解决不确定的问题」——从一段跑不通的代码到顺畅运行的瞬间，是这个专业给我的最大快乐。",
+    "about.p2":"学习路径上，我从 <strong>C 语言</strong>入门，理解了内存与指针的底层逻辑；随后用 <strong>Java</strong> 建立起面向对象的思维方式，用 <strong>C++</strong> 感受性能与抽象的平衡；再用 <strong>MySQL</strong> 把数据真正落下来。四门语言/技术互相印证，让我既有底层的耐心，也有工程的视角。",
+    "about.p3":"课业之外，我是跑道上的人。<strong>中长跑</strong>教会我的不是速度，而是节奏与配速感——知道什么时候该冲，什么时候该稳。这种能力同样适用于写代码：不追求一次写完，只追求每天都往前一点。",
+    "about.f1k":"学校 / 专业","about.f1v":"上海师范大学 · 计算机专业",
+    "about.f2k":"当前目标","about.f2v":"夯实算法与数据库基础，做出完整的后端项目",
+    "about.f3k":"正在学习","about.f3v":"数据结构与算法 · MySQL 优化 · Spring 生态",
+    "about.f4k":"日常状态","about.f4v":"白天上课写代码，傍晚操场上跑几圈",
+    "about.role":"计算机专业学生 · 运动爱好者",
+    "about.tag5":"中长跑","about.tag6":"羽毛球","about.tag7":"动漫",
+    "about.quote":"“跑得慢没关系，别停下来就行。”",
+
+    "skills.eyebrow":"技能栈",
+    "skills.title":"正在打磨的技术能力",
+    "skills.sub":"下面是我目前的学习进度自评——不是终点，而是当前的位置。",
+    "skills.c1":"编程语言","skills.c2":"数据与后端","skills.c3":"工具与方法",
+    "skills":[
+      [
+        {n:"C 语言",v:85,d:"指针、内存管理、结构体与文件操作"},
+        {n:"Java",v:80,d:"面向对象、集合框架、异常与 IO"},
+        {n:"C++",v:70,d:"类与模板、STL 常用容器、引用语义"}
+      ],
+      [
+        {n:"MySQL",v:78,d:"建表设计、多表联查、索引与事务基础"},
+        {n:"数据结构与算法",v:68,d:"线性表、树、排序与查找，持续刷题中"},
+        {n:"Linux / Shell",v:60,d:"常用命令、权限管理、简单脚本"}
+      ],
+      [
+        {n:"Git / GitHub",v:75,d:"分支管理、提交规范、协作流程"},
+        {n:"IDE 与调试",v:82,d:"VS Code、IDEA、断点调试与排错"},
+        {n:"文档与表达",v:74,d:"Markdown 写作、技术笔记整理"}
+      ]
+    ],
+
+    "projects.eyebrow":"项目作品",
+    "projects.title":"做过的一些东西",
+    "projects.sub":"点击卡片可以查看实现思路与踩坑记录。",
+    "projects.all":"全部",
+    "projects.tags":{all:"全部",lang:"语言基础",java:"Java",db:"数据库",cpp:"C++",algo:"算法",tool:"工具"},
+    "projects":[
+      {
+        id:"sms", icon:"🎓", cat:"java", star:48,
+        name:"学生成绩管理系统",
+        desc:"用 Java + MySQL 实现的学生信息与成绩管理，支持增删改查、成绩统计与排名导出。",
+        long:"课程设计项目，目的是把 Java 面向对象与数据库操作串起来。从需求拆解到表结构设计，再到 DAO 层封装，完整走了一遍小型信息系统的开发流程。",
+        points:[
+          "设计 student / course / score 三张表，用外键约束保证数据一致性",
+          "封装 JDBC 工具类，统一连接获取、事务提交与资源释放",
+          "用 PreparedStatement 规避 SQL 注入，并测试了特殊字符输入",
+          "实现按课程、按班级的成绩统计与平均分排名，支持导出 CSV"
+        ],
+        tech:["Java","MySQL","JDBC","Swing"]
+      },
+      {
+        id:"snake", icon:"🐍", cat:"lang", star:36,
+        name:"C 语言控制台贪吃蛇",
+        desc:"纯 C 实现的控制台小游戏，包含蛇身链表、碰撞检测、计分与难度递增。",
+        long:"用来练手 C 语言的第一批项目之一。最大的收获是理解了链表操作与终端刷新机制，也第一次认真处理了内存释放问题。",
+        points:[
+          "用单向链表维护蛇身节点，头插尾删实现移动与增长",
+          "通过坐标边界与自身节点比对完成碰撞检测",
+          "Win32 控制台 API 实现无闪烁刷新与方向键响应",
+          "用 Valgrind / 手动检查确认无内存泄漏"
+        ],
+        tech:["C","链表","Win32 API"]
+      },
+      {
+        id:"lib", icon:"📚", cat:"cpp", star:29,
+        name:"C++ 图书管理系统",
+        desc:"基于类与 STL 的图书借阅系统，支持借还书、库存校验与数据持久化。",
+        long:"在学完 C++ 类与 STL 后写的练手项目，重点练封装与文件持久化。对比 C 版本，代码组织明显更清爽。",
+        points:[
+          "Book / Reader / Loan 三个类划分职责，封装内部状态",
+          "使用 vector、map 管理集合，练习迭代器与谓词算法",
+          "fstream 完成数据落盘与启动时恢复",
+          "编写异常处理，避免非法借阅导致状态错乱"
+        ],
+        tech:["C++","STL","OOP","fstream"]
+      },
+      {
+        id:"algo", icon:"🧮", cat:"algo", star:52,
+        name:"算法刷题笔记仓库",
+        desc:"整理的 C / C++ 题解与模板，覆盖排序、查找、树与动态规划入门。",
+        long:"为了让刷题不白刷，我把每道题的思路、复杂度分析和易错点都写进 Markdown，形成自己的模板库。",
+        points:[
+          "按专题分类整理 100+ 题解，每篇含思路与复杂度分析",
+          "沉淀常用模板：快排、二分、并查集、二叉树遍历",
+          "记录易错点清单，例如边界条件、整数溢出、下标越界",
+          "用 Git 分支管理不同专题，养成规范提交习惯"
+        ],
+        tech:["C++","算法","Markdown","Git"]
+      },
+      {
+        id:"blog", icon:"✍️", cat:"tool", star:24,
+        name:"个人学习博客",
+        desc:"自建的技术笔记站点，记录学习路线与踩坑记录，支持分类与搜索。",
+        long:"把学习笔记从本地 Markdown 搬到网页上，顺便练习前端基础。这个过程让我意识到「能讲清楚」才是真的掌握。",
+        points:[
+          "纯 HTML/CSS/JS 手写，无框架依赖，加载极快",
+          "实现本地搜索与标签过滤，练习 DOM 操作",
+          "用 localStorage 记录阅读进度与主题偏好",
+          "配置 GitHub Pages 自动部署"
+        ],
+        tech:["HTML","CSS","JavaScript","GitHub Pages"]
+      },
+      {
+        id:"db", icon:"🗄️", cat:"db", star:31,
+        name:"MySQL 练习数据集",
+        desc:"为练 SQL 搭建的电商模拟数据库，含 8 张表与 60+ 条练习查询。",
+        long:"为了把多表联查和索引真正练熟，我自己造了一个小型电商数据集，从建表到写查询全程独立完成。",
+        points:[
+          "设计用户、商品、订单、订单明细等 8 张关联表",
+          "整理 60+ 条练习查询，从基础 CRUD 到多表聚合",
+          "用 EXPLAIN 对比索引前后的执行计划差异",
+          "编写存储过程统计月度销售排行"
+        ],
+        tech:["MySQL","SQL","EXPLAIN"]
+      }
+    ],
+
+    "tl.eyebrow":"经历",
+    "tl.title":"我的成长轨迹",
+    "tl":[
+      {d:"2023.09 — 至今", t:"上海师范大学 · 计算机专业", o:"本科在读", p:"系统学习 C 语言、数据结构、数据库原理等核心课程，同时保持每天写代码的习惯，把课堂知识落到项目里。"},
+      {d:"2024.03 — 2024.06", t:"Java 后端方向系统自学", o:"自主学习", p:"跟随课程与文档系统学习 Java 语法、集合框架与 JDBC，完成学生成绩管理系统，第一次独立走完「需求—设计—编码—测试」全流程。"},
+      {d:"2024.09 — 2024.12", t:"算法与数据结构强化", o:"专项训练", p:"集中刷题并整理题解仓库，覆盖排序、查找、树与动态规划入门，累计沉淀 100+ 篇笔记模板。"},
+      {d:"2025.03 — 至今", t:"MySQL 与数据库实践", o:"深入方向", p:"搭建电商模拟数据集练习多表联查与索引优化，学习用 EXPLAIN 分析执行计划，为后端项目打基础。"},
+      {d:"2025.05", t:"校运动会中长跑", o:"运动经历", p:"坚持中长跑训练并参加校运会，个人最好成绩 1500 米 5 分 12 秒。跑步教会我配速，也教会我耐心。"}
+    ],
+
+    "hb.eyebrow":"爱好",
+    "hb.title":"代码之外，我是这样的人",
+    "hb.sub":"运动对我不是消遣，而是维持专注力的方式。",
+    "hobbies":[
+      {icon:"🏃", n:"中长跑", d:"每周 4–5 次，主练 1500 米与 5 公里。喜欢那种跑到第 3 公里之后、脑子突然变安静的感觉。", k:"累计跑量", v:"800+ km"},
+      {icon:"🏸", n:"羽毛球", d:"常打双打，喜欢快速回合里的判断与配合。打球是我最好的解压方式。", k:"固定频率", v:"每周 2 次"},
+      {icon:"📺", n:"看动漫", d:"偏爱热血与运动番，《强风吹拂》看了三遍——它让我开始认真跑步。", k:"追番量", v:"120+ 部"}
+    ],
+
+    "blog.eyebrow":"学习笔记",
+    "blog.title":"最近写下的思考",
+    "blog.sub":"把学到的东西写下来，才算真的学会。点击可展开阅读。",
+    "blog.read":"阅读全文",
+    "posts":[
+      {
+        date:"2025.05.18", tag:"C 语言", read:"6 min",
+        title:"指针到底难在哪：一次画图之后的顿悟",
+        excerpt:"我曾经以为指针难在语法，后来发现难在「我脑子里的内存模型是错的」。把图画出来之后，一切都顺了。",
+        body:[
+          {h:"问题出在哪里", p:"初学指针时，我能背出 <code>int *p = &a;</code> 的含义，但一遇到二级指针和数组指针就懵。后来我意识到，问题不是语法，而是我从没真正想象过内存的样子。"},
+          {h:"我的解决办法：画图", p:"我在纸上画了一排格子代表内存，每个格子写上地址。然后强制自己每写一行指针代码，就在图上标出箭头。画了大约二十个例子之后，指针运算突然变得可以预测了。"},
+          {h:"三个真正的坑", list:["指针未初始化就解引用——野指针是崩溃的头号来源","数组名退化为指针后 <code>sizeof</code> 的结果会变，很容易误判长度","函数里返回局部变量的地址，函数返回后那块内存已经失效"]},
+          {h:"总结", p:"指针不是一个语法点，而是一个模型。模型建立起来之后，C 语言剩下的部分都会变得清晰很多。这也是我觉得 C 值得作为第一门语言的原因。"}
+        ]
+      },
+      {
+        date:"2025.04.30", tag:"Java", read:"7 min",
+        title:"从 C 转到 Java，我最不习惯的三件事",
+        excerpt:"没有指针让我轻松，但「一切皆对象」和 GC 反而让我一开始写得更慢了。记录这段思维转换的过程。",
+        body:[
+          {h:"第一件：没有指针，但全是引用", p:"刚写 Java 时，我以为不用管内存了。结果第一个 bug 就是对象引用传递——把对象当参数传进方法修改，外面的对象也变了。Java 的引用语义其实是另一种形式的指针，只是不能做算术运算。"},
+          {h:"第二件：GC 让我变懒了", p:"C 里我要对每个 malloc 负责，写 Java 时一开始完全不考虑对象生命周期，结果写出了在循环里疯狂创建对象的代码。GC 不是免死金牌，只是把「管理内存」变成了「管理对象数量」。"},
+          {h:"第三件：集合框架太好用，反而容易不懂", p:"ArrayList、HashMap 拿来就用，直到面试被问扩容机制才回去看源码。我的经验是：先用起来，但一定要回头搞清楚底层结构，尤其是哈希冲突和扩容。"},
+          {h:"两个语言的互补", p:"C 让我在意底层与性能，Java 让我在意结构与可维护性。两门一起学，比只学一门理解得更深。"}
+        ]
+      },
+      {
+        date:"2025.04.12", tag:"MySQL", read:"8 min",
+        title:"索引不是越多越好：一次全表扫描的排查记录",
+        excerpt:"一条查询慢得离谱，我加了索引反而更慢。最后发现问题出在函数包装了索引列。",
+        body:[
+          {h:"现象", p:"练习用的订单表大约 50 万行，一条按日期过滤的统计查询跑了好几秒。我第一反应是加索引，于是在日期字段上建了索引。"},
+          {h:"为什么没用", p:"用 EXPLAIN 一看，<code>type</code> 仍然是 <code>ALL</code>，也就是全表扫描。原因是我写的是 <code>WHERE DATE(created_at) = '2025-04-01'</code>——在索引列上套了函数，索引直接失效。"},
+          {h:"修正方式", list:["改写为范围查询：<code>created_at >= '2025-04-01' AND created_at < '2025-04-02'</code>","按照最左前缀原则调整联合索引的字段顺序","避免在索引列上做隐式类型转换"]},
+          {h:"关于索引的取舍", p:"索引加快查询，但会拖慢写入并占用空间。我现在建索引前会先问三个问题：这条查询高频吗？选择性高吗？有没有更简单的写法？想清楚再建，比事后乱加要省事得多。"}
+        ]
+      },
+      {
+        date:"2025.03.26", tag:"跑步", read:"5 min",
+        title:"跑了 800 公里之后，我学到的三件事",
+        excerpt:"跑步和写代码有个共同点：都不是靠一次爆发，而是靠每天那一点点。",
+        body:[
+          {h:"一、配速比速度重要", p:"刚开始跑步时我每次都冲，结果三天就伤了膝盖。后来学会看配速，把大部分训练控制在能正常说话的强度，反而进步更快。写代码也一样——稳定的每日投入胜过偶尔的通宵。"},
+          {h:"二、疼痛是信息，不是障碍", p:"膝盖疼的时候我选择休息一周而不是硬撑。后来明白，身体给的信号要听。调试代码同理，报错信息不是敌人，而是最诚实的提示。"},
+          {h:"三、记录让进步可见", p:"我用手机记录每次跑的距离和配速，三个月后回看，才发现自己真的变强了。这和写学习笔记是一个道理——没有记录，成长就感觉不到。"},
+          {h:"下一步", p:"目标是把 5 公里跑进 22 分钟，同时保持每周至少两次羽毛球。运动让我在写代码时更能坐得住。"}
+        ]
+      }
+    ],
+
+    "ct.eyebrow":"联系",
+    "ct.title":"有想法？欢迎聊聊",
+    "ct.sub":"无论是技术交流、组队做项目，还是约一场球、一起跑步，我都很乐意。",
+    "ct.emailK":"邮箱","ct.phoneK":"电话","ct.locK":"所在城市","ct.locV":"中国 · 上海","ct.schoolK":"就读院校","ct.schoolV":"上海师范大学",
+    "ct.lName":"你的名字","ct.lEmail":"邮箱","ct.lMsg":"想说的话",
+    "ct.pName":"张三","ct.pEmail":"you@example.com","ct.pMsg":"你好，我想和你聊聊……",
+    "ct.eName":"请填写你的名字","ct.eEmail":"请输入有效的邮箱地址","ct.eMsg":"内容至少 5 个字",
+    "ct.send":"发送消息",
+    "ct.note":"纯静态页面，提交后会唤起你的邮件客户端。也可以直接复制上面邮箱。",
+    "ct.okName":"请输入你的名字","ct.okEmail":"请输入有效的邮箱地址","ct.okMsg":"内容至少 5 个字","ct.ok":"已准备好邮件，正在唤起邮件客户端…",
+
+    "ft.left":"© 2025 丁卓 · 用 HTML / CSS / JavaScript 手写而成",
+    "ft.top":"回到顶部",
+    "modal.hint":"技术栈",
+    "toast.sent":"消息校验通过，正在唤起邮件客户端",
+
+    "av.eyebrow":"数字分身",
+    "av.title":"和我的数字分身聊聊",
+    "av.sub":"它是基于我本人信息生成的对话人格，可以回答关于我的学习、技能、项目和爱好。所有推理都在你的浏览器里完成，离线可用。",
+    "av.online":"在线",
+    "av.name":"丁卓",
+    "av.id":"UNIT-DZ-01 // 人格副本",
+    "av.b1":"语言","av.b2":"逻辑","av.b3":"耐力",
+    "av.tagline":"// 离线人格引擎 v1.0",
+    "av.voice":"语音","av.reset":"重置","av.send":"发送",
+    "av.foot1":"关键词加权检索 · 无网络请求 · 支持中英双语",
+    "av.foot2":"试试问：你会什么语言？",
+    "av.ph":"问我任何关于丁卓的问题…",
+    "av.greet":"你好，我是丁卓的数字分身。关于他的学习、技能、项目、经历和爱好，你都可以直接问我。",
+    "av.chips":["你会什么语言？","做过哪些项目？","为什么喜欢跑步？","怎么联系他？"],
+    "av.notknow":"这个问题我还答不上来，也许你可以换个问法，或者直接问他本人：dingzhuo@example.com",
+    "av.didyoumean":"你是想问这些吗？",
+    "av.thinking":"思考中",
+    "av.reset.ok":"对话已重置",
+    "av.voice.on":"已开启语音朗读",
+    "av.voice.off":"已关闭语音朗读",
+    "av.voice.na":"当前浏览器不支持语音合成"
+  },
+
+  en: {
+    "brand.name":"Ding Zhuo",
+    "nav.home":"Home","nav.about":"About","nav.skills":"Skills","nav.projects":"Projects",
+    "nav.timeline":"Journey","nav.hobbies":"Hobbies","nav.avatar":"Avatar","nav.blog":"Notes","nav.contact":"Contact",
+
+    "hero.status":"Undergrad · Computer Science",
+    "hero.hi":"Hi, I'm",
+    "hero.name":"Ding Zhuo",
+    "hero.prefix":"I am a",
+    "hero.types":["Computer Science student","long-distance runner","backend learner","badminton regular","anime watcher"],
+    "hero.lede":"A Computer Science student at Shanghai Normal University. I love turning logic into code and leaving my sweat on the track. Currently digging into <b>C / Java / C++</b> and <b>MySQL</b> — I believe solid fundamentals pay off in the long run.",
+    "hero.cta1":"View my projects","hero.cta2":"Get in touch",
+    "hero.caption":"// CODE BY DAY · RUN BY DUSK",
+    "stats.s1":"Years coding","stats.s2":"Projects built","stats.s3":"Tech tracks","stats.s4":"KM run",
+
+    "about.eyebrow":"About me",
+    "about.title":"Writing ideas into code, running persistence into habit",
+    "about.p1":"I'm <strong>Ding Zhuo</strong>, a Computer Science student at Shanghai Normal University. What I enjoy most about programming is solving uncertain problems with certain logic — the moment a broken piece of code finally runs is the greatest joy this major gives me.",
+    "about.p2":"I started with <strong>C</strong>, which taught me how memory and pointers really work. Then <strong>Java</strong> gave me object-oriented thinking, <strong>C++</strong> showed me the balance between performance and abstraction, and <strong>MySQL</strong> let me actually persist data. Learning these together gives me both low-level patience and an engineering perspective.",
+    "about.p3":"Outside of coursework, I'm a runner. <strong>Long-distance running</strong> taught me pacing rather than speed — knowing when to sprint and when to hold steady. The same applies to code: I don't aim to finish it all at once, just to move a little forward every day.",
+    "about.f1k":"School / Major","about.f1v":"Shanghai Normal University · Computer Science",
+    "about.f2k":"Current goal","about.f2v":"Solidify algorithms and databases, then build a complete backend project",
+    "about.f3k":"Currently learning","about.f3v":"Data structures & algorithms · MySQL tuning · Spring ecosystem",
+    "about.f4k":"Daily rhythm","about.f4v":"Classes and code by day, a few laps on the track at dusk",
+    "about.role":"CS student · Sports enthusiast",
+    "about.tag5":"Running","about.tag6":"Badminton","about.tag7":"Anime",
+    "about.quote":"“It's fine to run slow — just don't stop.”",
+
+    "skills.eyebrow":"Skill set",
+    "skills.title":"Skills I'm sharpening",
+    "skills.sub":"These are my honest self-assessments — not the finish line, just where I stand now.",
+    "skills.c1":"Languages","skills.c2":"Data & Backend","skills.c3":"Tools & Practice",
+    "skills":[
+      [
+        {n:"C",v:85,d:"Pointers, memory management, structs, file I/O"},
+        {n:"Java",v:80,d:"OOP, collections, exceptions, I/O"},
+        {n:"C++",v:70,d:"Classes & templates, STL containers, references"}
+      ],
+      [
+        {n:"MySQL",v:78,d:"Schema design, joins, indexes, transactions"},
+        {n:"Data Structures & Algorithms",v:68,d:"Lists, trees, sorting & searching — still practicing"},
+        {n:"Linux / Shell",v:60,d:"Common commands, permissions, basic scripting"}
+      ],
+      [
+        {n:"Git / GitHub",v:75,d:"Branching, commit conventions, collaboration"},
+        {n:"IDE & Debugging",v:82,d:"VS Code, IDEA, breakpoints and troubleshooting"},
+        {n:"Writing & Docs",v:74,d:"Markdown notes and technical writing"}
+      ]
+    ],
+
+    "projects.eyebrow":"Selected work",
+    "projects.title":"Things I've built",
+    "projects.sub":"Click a card to see how I approached it and what went wrong.",
+    "projects.all":"All",
+    "projects.tags":{all:"All",lang:"Foundations",java:"Java",db:"Database",cpp:"C++",algo:"Algorithms",tool:"Tools"},
+    "projects":[
+      {
+        id:"sms", icon:"🎓", cat:"java", star:48,
+        name:"Student Grade Management System",
+        desc:"A student and grade management system built with Java + MySQL, supporting CRUD, statistics and ranked exports.",
+        long:"A course project meant to connect Java OOP with database operations. I walked the full path of a small information system: requirement breakdown, schema design, DAO layer, and testing.",
+        points:[
+          "Designed student / course / score tables with foreign keys for consistency",
+          "Wrapped a JDBC utility class for connections, transactions and cleanup",
+          "Used PreparedStatement to prevent SQL injection, tested with special characters",
+          "Built per-course and per-class statistics with CSV export"
+        ],
+        tech:["Java","MySQL","JDBC","Swing"]
+      },
+      {
+        id:"snake", icon:"🐍", cat:"lang", star:36,
+        name:"Console Snake in C",
+        desc:"A pure C console game with a linked-list snake body, collision detection, scoring and rising difficulty.",
+        long:"One of my first C projects. The biggest takeaway was understanding linked-list manipulation and terminal refresh — and handling memory correctly for the first time.",
+        points:[
+          "Maintained the snake as a singly linked list with head-insert and tail-delete",
+          "Collision detection via boundary checks and self-node comparison",
+          "Win32 console API for flicker-free rendering and arrow-key input",
+          "Verified no memory leaks through careful review"
+        ],
+        tech:["C","Linked list","Win32 API"]
+      },
+      {
+        id:"lib", icon:"📚", cat:"cpp", star:29,
+        name:"C++ Library Management System",
+        desc:"A book lending system built on classes and the STL, with borrowing, stock validation and persistence.",
+        long:"A practice project after learning C++ classes and the STL, focused on encapsulation and file persistence. Compared with my C version, the code organization is far cleaner.",
+        points:[
+          "Split responsibilities across Book / Reader / Loan classes",
+          "Used vector and map for collections, practicing iterators and predicates",
+          "Persisted data with fstream and restored it on startup",
+          "Added exception handling to prevent inconsistent lending states"
+        ],
+        tech:["C++","STL","OOP","fstream"]
+      },
+      {
+        id:"algo", icon:"🧮", cat:"algo", star:52,
+        name:"Algorithm Notes Repository",
+        desc:"Organized C / C++ solutions and templates covering sorting, searching, trees and intro dynamic programming.",
+        long:"So that practice wouldn't go to waste, I wrote up the idea, complexity analysis and pitfalls of every problem into Markdown — building my own template library.",
+        points:[
+          "Organized 100+ solutions by topic, each with reasoning and complexity",
+          "Distilled templates: quicksort, binary search, union-find, tree traversal",
+          "Kept a pitfalls list: edge cases, integer overflow, out-of-range indices",
+          "Managed topics with Git branches to build good commit habits"
+        ],
+        tech:["C++","Algorithms","Markdown","Git"]
+      },
+      {
+        id:"blog", icon:"✍️", cat:"tool", star:24,
+        name:"Personal Learning Blog",
+        desc:"A self-built notes site recording my learning path and pitfalls, with categories and search.",
+        long:"Moving my notes from local Markdown to the web was also frontend practice. It made me realize that being able to explain something clearly is what proves you understand it.",
+        points:[
+          "Hand-written HTML/CSS/JS with no framework — extremely fast to load",
+          "Client-side search and tag filtering for DOM practice",
+          "localStorage for reading progress and theme preference",
+          "Deployed automatically on GitHub Pages"
+        ],
+        tech:["HTML","CSS","JavaScript","GitHub Pages"]
+      },
+      {
+        id:"db", icon:"🗄️", cat:"db", star:31,
+        name:"MySQL Practice Dataset",
+        desc:"A simulated e-commerce database for SQL practice: 8 tables and 60+ practice queries.",
+        long:"To really master joins and indexes, I built a small e-commerce dataset myself — from schema design all the way to writing the queries.",
+        points:[
+          "Designed 8 related tables: users, products, orders, order items and more",
+          "Wrote 60+ practice queries from basic CRUD to multi-table aggregation",
+          "Compared execution plans before and after indexing using EXPLAIN",
+          "Wrote a stored procedure for monthly sales rankings"
+        ],
+        tech:["MySQL","SQL","EXPLAIN"]
+      }
+    ],
+
+    "tl.eyebrow":"Journey",
+    "tl.title":"How I got here",
+    "tl":[
+      {d:"Sep 2023 — Now", t:"Shanghai Normal University · Computer Science", o:"Undergraduate", p:"Studying core courses in C, data structures and database principles, while keeping a daily coding habit and turning coursework into real projects."},
+      {d:"Mar 2024 — Jun 2024", t:"Self-taught Java backend track", o:"Self-directed", p:"Studied Java syntax, collections and JDBC systematically, then built the student grade management system — my first end-to-end run through requirements, design, coding and testing."},
+      {d:"Sep 2024 — Dec 2024", t:"Algorithms & data structures intensive", o:"Focused training", p:"Concentrated practice with an organized solution repository covering sorting, searching, trees and intro DP — 100+ written notes."},
+      {d:"Mar 2025 — Now", t:"MySQL and database practice", o:"Deepening", p:"Built an e-commerce practice dataset for joins and index tuning, learning to read execution plans with EXPLAIN as groundwork for backend work."},
+      {d:"May 2025", t:"University sports meet — long distance", o:"Athletics", p:"Kept up long-distance training and competed at the university sports meet. Personal best: 1500m in 5:12. Running taught me pacing and patience."}
+    ],
+
+    "hb.eyebrow":"Hobbies",
+    "hb.title":"Who I am beyond the code",
+    "hb.sub":"For me, sports aren't a pastime — they're how I keep my focus.",
+    "hobbies":[
+      {icon:"🏃", n:"Long-distance running", d:"Four to five times a week, mainly 1500m and 5K. I love how my mind suddenly goes quiet after the third kilometre.", k:"Total distance", v:"800+ km"},
+      {icon:"🏸", n:"Badminton", d:"Mostly doubles — I enjoy the quick decisions and teamwork in fast rallies. It's my best way to decompress.", k:"Frequency", v:"Twice a week"},
+      {icon:"📺", n:"Anime", d:"I lean toward sports and shonen series. I've watched Run with the Wind three times — it's what got me running seriously.", k:"Watched", v:"120+ series"}
+    ],
+
+    "blog.eyebrow":"Notes",
+    "blog.title":"Recent thoughts",
+    "blog.sub":"You only really learn something once you've written it down. Click to read.",
+    "blog.read":"Read more",
+    "posts":[
+      {
+        date:"May 18, 2025", tag:"C", read:"6 min",
+        title:"Why pointers are hard: the realization after drawing one diagram",
+        excerpt:"I thought pointers were hard because of syntax. They're hard because my mental model of memory was wrong. Drawing it fixed everything.",
+        body:[
+          {h:"Where the problem was", p:"As a beginner I could recite what <code>int *p = &a;</code> means, but pointer-to-pointer and array pointers lost me. Eventually I realized the issue wasn't syntax — I had never actually pictured what memory looks like."},
+          {h:"What I did: draw it", p:"I drew a row of boxes on paper to represent memory and wrote addresses in each one. Then I forced myself to mark arrows on the diagram for every line of pointer code I wrote. After about twenty examples, pointer arithmetic became predictable."},
+          {h:"Three real traps", list:["Dereferencing an uninitialized pointer — wild pointers are the number one crash source","An array name decays to a pointer, so <code>sizeof</code> changes meaning and lengths get misjudged","Returning the address of a local variable — that memory is gone once the function returns"]},
+          {h:"Takeaway", p:"A pointer isn't a syntax feature, it's a model. Once the model is in place, the rest of C becomes much clearer. That's why I think C is worth learning first."}
+        ]
+      },
+      {
+        date:"Apr 30, 2025", tag:"Java", read:"7 min",
+        title:"Three things that felt strange moving from C to Java",
+        excerpt:"No pointers was a relief, but 'everything is an object' and the GC actually slowed me down at first. Notes on that mental shift.",
+        body:[
+          {h:"One: no pointers, but everything is a reference", p:"Early on I assumed I no longer had to think about memory. My first bug proved otherwise: passing an object into a method and mutating it changed the caller's object too. Java references are pointers in another form — just without arithmetic."},
+          {h:"Two: the GC made me lazy", p:"In C every malloc was my responsibility. In Java I initially ignored object lifetimes entirely and wrote loops that created objects frantically. The GC isn't immunity — it just turns memory management into object-count management."},
+          {h:"Three: the collections framework is so good it hides the details", p:"I used ArrayList and HashMap without thinking until an interview question about resizing sent me back to the source. My rule now: use it first, but always come back and understand the underlying structure — especially hash collisions and resizing."},
+          {h:"How the two languages complement each other", p:"C makes me care about the low level and performance; Java makes me care about structure and maintainability. Learning both gives me a deeper understanding than either alone."}
+        ]
+      },
+      {
+        date:"Apr 12, 2025", tag:"MySQL", read:"8 min",
+        title:"More indexes isn't better: debugging a full table scan",
+        excerpt:"One query was absurdly slow, and adding an index made it worse. The culprit: a function wrapped around the indexed column.",
+        body:[
+          {h:"The symptom", p:"My practice orders table had around 500,000 rows, and a date-filtered aggregation took several seconds. My first instinct was to add an index on the date column."},
+          {h:"Why it didn't help", p:"EXPLAIN still showed <code>type: ALL</code>, a full table scan. The reason was my query: <code>WHERE DATE(created_at) = '2025-04-01'</code>. Wrapping the indexed column in a function makes the index unusable."},
+          {h:"The fix", list:["Rewrite as a range: <code>created_at >= '2025-04-01' AND created_at < '2025-04-02'</code>","Reorder composite index columns following the leftmost-prefix rule","Avoid implicit type conversion on indexed columns"]},
+          {h:"Trade-offs of indexing", p:"Indexes speed up reads but slow down writes and take space. Before creating one I now ask three questions: is this query frequent? is the column selective? is there a simpler way to write it? Thinking first saves a lot of cleanup later."}
+        ]
+      },
+      {
+        date:"Mar 26, 2025", tag:"Running", read:"5 min",
+        title:"Three things 800 kilometres taught me",
+        excerpt:"Running and coding share something: neither is built on one burst of effort, but on a little bit every day.",
+        body:[
+          {h:"One: pacing beats speed", p:"At first I sprinted every session and hurt my knee within three days. Learning to read my pace and keep most training at a conversational intensity made me improve faster. Coding is the same — steady daily effort beats occasional all-nighters."},
+          {h:"Two: pain is information, not an obstacle", p:"When my knee hurt I rested for a week instead of pushing through. Your body gives you signals worth listening to. Debugging is no different: an error message isn't the enemy, it's the most honest hint you'll get."},
+          {h:"Three: records make progress visible", p:"I logged every run's distance and pace, and three months later I could see I'd genuinely gotten stronger. Same with study notes — without records, growth is invisible."},
+          {h:"What's next", p:"My goal is a sub-22-minute 5K while keeping badminton twice a week. Sports help me sit still and focus when I code."}
+        ]
+      }
+    ],
+
+    "ct.eyebrow":"Contact",
+    "ct.title":"Got an idea? Let's talk",
+    "ct.sub":"Whether it's tech talk, building something together, a game of badminton or a run — I'm happy to hear from you.",
+    "ct.emailK":"Email","ct.phoneK":"Phone","ct.locK":"Location","ct.locV":"Shanghai, China","ct.schoolK":"University","ct.schoolV":"Shanghai Normal University",
+    "ct.lName":"Your name","ct.lEmail":"Email","ct.lMsg":"Message",
+    "ct.pName":"Jane Doe","ct.pEmail":"you@example.com","ct.pMsg":"Hi, I'd like to talk about…",
+    "ct.eName":"Please enter your name","ct.eEmail":"Please enter a valid email address","ct.eMsg":"Please write at least 5 characters",
+    "ct.send":"Send message",
+    "ct.note":"This is a static page — submitting opens your mail client. You can also copy the address above.",
+    "ct.okName":"Please enter your name","ct.okEmail":"Please enter a valid email address","ct.okMsg":"Please write at least 5 characters","ct.ok":"Mail is ready, opening your mail client…",
+
+    "ft.left":"© 2025 Ding Zhuo · Hand-built with HTML / CSS / JavaScript",
+    "ft.top":"Back to top",
+    "modal.hint":"Tech stack",
+    "toast.sent":"Validated — opening your mail client",
+
+    "av.eyebrow":"Digital avatar",
+    "av.title":"Talk to my digital avatar",
+    "av.sub":"A conversational persona built from my own information. It can answer questions about my studies, skills, projects and hobbies. All reasoning runs in your browser — it works offline.",
+    "av.online":"Online",
+    "av.name":"Ding Zhuo",
+    "av.id":"UNIT-DZ-01 // PERSONA COPY",
+    "av.b1":"LANG","av.b2":"LOGIC","av.b3":"STAMINA",
+    "av.tagline":"// offline persona engine v1.0",
+    "av.voice":"Voice","av.reset":"Reset","av.send":"Send",
+    "av.foot1":"Weighted keyword retrieval · no network calls · bilingual",
+    "av.foot2":"Try asking: which languages do you know?",
+    "av.ph":"Ask me anything about Ding Zhuo…",
+    "av.greet":"Hi, I'm Ding Zhuo's digital avatar. Ask me anything about his studies, skills, projects, journey or hobbies.",
+    "av.chips":["Which languages do you know?","What have you built?","Why do you love running?","How can I reach him?"],
+    "av.notknow":"I can't answer that yet — try rephrasing, or just email him directly: dingzhuo@example.com",
+    "av.didyoumean":"Did you mean one of these?",
+    "av.thinking":"Thinking",
+    "av.reset.ok":"Conversation reset",
+    "av.voice.on":"Voice playback on",
+    "av.voice.off":"Voice playback off",
+    "av.voice.na":"Speech synthesis isn't supported in this browser"
+  }
+};
+
+/* ============================================================
+   2. 状态与工具
+   ============================================================ */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+let lang = localStorage.getItem('dz-lang') || 'zh';
+let theme = localStorage.getItem('dz-theme') || 'dark';
+let activeFilter = 'all';
+
+const t = (key) => (I18N[lang][key] !== undefined ? I18N[lang][key] : key);
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+
+/* ============================================================
+   3. 主题
+   ============================================================ */
+function applyTheme(next) {
+  theme = next;
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('dz-theme', theme);
+}
+
+/* ============================================================
+   4. 静态文案渲染（data-i18n / data-i18n-html）
+   ============================================================ */
+function applyStaticText() {
+  $$('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  $$('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+  // 描边字与斜切标签需要同步的副属性
+  const brand = $('.brand .name');
+  if (brand) brand.dataset.text = t('brand.name');
+  const h1j = $('.hero h1 .line2');
+  if (h1j) h1j.dataset.text = t('hero.name');
+  $$('.sec-head h2').forEach(h => { h.dataset.text = h.textContent; });
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.title = lang === 'zh' ? '丁卓 · 个人主页' : 'Ding Zhuo · Personal Homepage';
+  $('#langLabel').textContent = lang === 'zh' ? 'EN' : '中';
+}
+
+/* ============================================================
+   5. 打字机
+   ============================================================ */
+let typeTimer = null, typeIdx = 0, charIdx = 0, deleting = false;
+function startTyping() {
+  clearTimeout(typeTimer);
+  typeIdx = 0; charIdx = 0; deleting = false;
+  const el = $('#typed');
+  const list = t('hero.types');
+  const step = () => {
+    const word = list[typeIdx % list.length];
+    if (!deleting) {
+      charIdx++;
+      el.textContent = word.slice(0, charIdx);
+      if (charIdx >= word.length) { deleting = true; return (typeTimer = setTimeout(step, 1700)); }
+      return (typeTimer = setTimeout(step, 78));
+    }
+    charIdx--;
+    el.textContent = word.slice(0, charIdx);
+    if (charIdx <= 0) { deleting = false; typeIdx++; return (typeTimer = setTimeout(step, 320)); }
+    return (typeTimer = setTimeout(step, 36));
+  };
+  step();
+}
+
+/* ============================================================
+   6. 技能
+   ============================================================ */
+function renderSkills() {
+  const groups = t('skills');
+  groups.forEach((group, gi) => {
+    const box = $('#skillList' + (gi + 1));
+    if (!box) return;
+    box.innerHTML = group.map(s => `
+      <div class="skill" title="${esc(s.d)}">
+        <div class="top"><span>${esc(s.n)}</span><span class="pct">${s.v}%</span></div>
+        <div class="bar"><i data-w="${s.v}"></i></div>
+      </div>`).join('');
+  });
+  observeBars();
+}
+function observeBars() {
+  const bars = $$('.bar i, .av-bar .track i');
+  const run = (el) => { el.style.width = el.dataset.w + '%'; };
+  if (!('IntersectionObserver' in window)) return bars.forEach(run);
+  // threshold 0 + 大 rootMargin：面板比视口高时，只要露出一点也触发，避免永远不填充
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { run(e.target); io.unobserve(e.target); } });
+  }, { threshold: 0, rootMargin: '0px 0px 220px 0px' });
+  bars.forEach(b => io.observe(b));
+}
+
+/* ============================================================
+   7. 项目（含筛选 + 详情弹层）
+   ============================================================ */
+function renderFilters() {
+  const tags = t('projects.tags');
+  const cats = ['all', 'lang', 'java', 'cpp', 'db', 'algo', 'tool'];
+  $('#filters').innerHTML = cats.map(c =>
+    `<button class="chip${c === activeFilter ? ' on' : ''}" data-cat="${c}"><span>${esc(tags[c] || c)}</span></button>`
+  ).join('');
+  $$('#filters .chip').forEach(btn => btn.addEventListener('click', () => {
+    activeFilter = btn.dataset.cat;
+    $$('#filters .chip').forEach(b => b.classList.toggle('on', b === btn));
+    filterProjects();
+  }));
+}
+
+function renderProjects() {
+  const list = t('projects');
+  const tags = t('projects.tags');
+  $('#projectGrid').innerHTML = list.map((p, i) => `
+    <article class="card proj" data-cat="${p.cat}" data-id="${p.id}" tabindex="0">
+      <span class="no">${String(i + 1).padStart(2, '0')}</span>
+      <div class="thumb"><span>${p.icon}</span></div>
+      <div class="proj-body">
+        <h3>${esc(p.name)}<svg><use href="#i-arrow-ur"/></svg></h3>
+        <p class="desc">${esc(p.desc)}</p>
+        <div class="meta">
+          <span class="tag">${esc(tags[p.cat] || p.cat)}</span>
+          <span class="star"><svg><use href="#i-star"/></svg>${p.star}</span>
+        </div>
+      </div>
+    </article>`).join('');
+  filterProjects();
+  $$('#projectGrid .proj').forEach(card => {
+    card.addEventListener('click', () => openProject(card.dataset.id));
+    card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openProject(card.dataset.id); } });
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+}
+
+function filterProjects() {
+  $$('#projectGrid .proj').forEach(el => {
+    el.classList.toggle('hide', activeFilter !== 'all' && el.dataset.cat !== activeFilter);
+  });
+}
+
+function openProject(id) {
+  const p = t('projects').find(x => x.id === id);
+  if (!p) return;
+  $('#modalBox').innerHTML = `
+    <button class="m-close" id="mClose" aria-label="Close"><svg><use href="#i-close"/></svg></button>
+    <div class="m-eyebrow">${esc(t('projects.tags')[p.cat] || p.cat)}</div>
+    <h3>${p.icon} ${esc(p.name)}</h3>
+    <p>${esc(p.long)}</p>
+    <ul class="bullets">${p.points.map(x => `<li><span>${esc(x)}</span></li>`).join('')}</ul>
+    <div class="m-tags">
+      <span class="tag" style="pointer-events:none">${esc(t('modal.hint'))}</span>
+      ${p.tech.map(x => `<span class="tag">${esc(x)}</span>`).join('')}
+    </div>`;
+  showModal();
+}
+
+/* ============================================================
+   8. 时间轴
+   ============================================================ */
+function renderTimeline() {
+  $('#timelineList').innerHTML = t('tl').map(item => `
+    <div class="tl-item reveal">
+      <div class="tl-card">
+        <span class="tl-date"><span>${esc(item.d)}</span></span>
+        <h3>${esc(item.t)}</h3>
+        <div class="org">${esc(item.o)}</div>
+        <p>${esc(item.p)}</p>
+      </div>
+    </div>`).join('');
+  // org 中使用 · 分隔的机构名不做 i18n 处理，保持数据驱动
+  observeReveal();
+}
+
+/* ============================================================
+   9. 爱好
+   ============================================================ */
+function renderHobbies() {
+  $('#hobbyGrid').innerHTML = t('hobbies').map((h, i) => `
+    <div class="hobby reveal">
+      <span class="no">${String(i + 1).padStart(2, '0')}</span>
+      <span class="big">${h.icon}</span>
+      <h3>${esc(h.n)}</h3>
+      <p>${esc(h.d)}</p>
+      <div class="meter"><span>${esc(h.k)}</span><b>${esc(h.v)}</b></div>
+    </div>`).join('');
+  observeReveal();
+}
+
+/* ============================================================
+   10. 博客
+   ============================================================ */
+function renderPosts() {
+  $('#postList').innerHTML = t('posts').map((p, i) => `
+    <article class="post reveal" data-idx="${i}" tabindex="0">
+      <span class="pdate"><span>${esc(p.date)}</span></span>
+      <div>
+        <h3>${esc(p.title)}</h3>
+        <p class="pex">${esc(p.excerpt)}</p>
+        <div class="ptags"><span>${esc(p.tag)}</span><span>${esc(p.read)}</span></div>
+      </div>
+      <span class="go"><svg><use href="#i-arrow-right"/></svg></span>
+    </article>`).join('');
+  $$('#postList .post').forEach(el => {
+    el.addEventListener('click', () => openPost(+el.dataset.idx));
+    el.addEventListener('keydown', e => { if (e.key === 'Enter') openPost(+el.dataset.idx); });
+  });
+  observeReveal();
+}
+
+function openPost(i) {
+  const p = t('posts')[i];
+  if (!p) return;
+  $('#modalBox').innerHTML = `
+    <button class="m-close" id="mClose" aria-label="Close"><svg><use href="#i-close"/></svg></button>
+    <div class="m-eyebrow">${esc(p.tag)} · ${esc(p.read)}</div>
+    <h3>${esc(p.title)}</h3>
+    <div class="reading">
+      ${p.body.map(b => `
+        <h4>${esc(b.h)}</h4>
+        ${b.p ? `<p>${b.p}</p>` : ''}
+        ${b.list ? `<ul>${b.list.map(x => `<li><span>${x}</span></li>`).join('')}</ul>` : ''}
+      `).join('')}
+    </div>`;
+  showModal();
+}
+
+/* ============================================================
+   11. 弹层控制
+   ============================================================ */
+function showModal() {
+  const m = $('#modal');
+  m.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  const c = $('#mClose');
+  if (c) c.addEventListener('click', hideModal);
+}
+function hideModal() {
+  $('#modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') hideModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') hideModal(); });
+
+/* ============================================================
+   12. 滚动出现动画
+   ============================================================ */
+let revealIO = null;
+function observeReveal() {
+  const items = $$('.reveal:not(.in)');
+  if (!('IntersectionObserver' in window)) return items.forEach(el => el.classList.add('in'));
+  if (!revealIO) {
+    revealIO = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('in'), i * 70);
+          revealIO.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+  }
+  items.forEach(el => revealIO.observe(el));
+}
+
+/* ============================================================
+   13. 数字滚动
+   ============================================================ */
+function observeCount() {
+  const els = $$('.count');
+  const run = (el) => {
+    const to = +el.dataset.to;
+    const dur = 1400;
+    const t0 = performance.now();
+    const tick = (now) => {
+      const k = Math.min(1, (now - t0) / dur);
+      const eased = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(to * eased);
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  if (!('IntersectionObserver' in window)) return els.forEach(run);
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { run(e.target); io.unobserve(e.target); } });
+  }, { threshold: 0.5 });
+  els.forEach(el => io.observe(el));
+}
+
+/* ============================================================
+   14. 顶栏 / 进度条 / 滚动高亮
+   ============================================================ */
+const sections = ['home', 'about', 'skills', 'projects', 'timeline', 'hobbies', 'avatar', 'blog', 'contact'];
+function onScroll() {
+  const y = window.scrollY;
+  $('#topbar').classList.toggle('scrolled', y > 12);
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  $('#progress').style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+
+  let current = 'home';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 140) current = id;
+  });
+  $$('#nav a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', onScroll);
+
+/* ============================================================
+   15. 表单校验
+   ============================================================ */
+function initForm() {
+  const form = $('#contactForm');
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = $('#in-name').value.trim();
+    const email = $('#in-email').value.trim();
+    const msg = $('#in-msg').value.trim();
+
+    setField('f-name', name.length > 0);
+    setField('f-email', emailRe.test(email));
+    setField('f-msg', msg.length >= 5);
+
+    if (!name) return toast(t('ct.okName'));
+    if (!emailRe.test(email)) return toast(t('ct.okEmail'));
+    if (msg.length < 5) return toast(t('ct.okMsg'));
+
+    toast(t('toast.sent'));
+    const subject = encodeURIComponent(`[个人主页] 来自 ${name} 的留言`);
+    const body = encodeURIComponent(`${msg}\n\n—— ${name}\n${email}`);
+    setTimeout(() => { window.location.href = `mailto:dingzhuo@example.com?subject=${subject}&body=${body}`; }, 500);
+  });
+
+  ['in-name', 'in-email', 'in-msg'].forEach(id => {
+    $('#' + id).addEventListener('input', () => {
+      const wrap = $('#' + id).closest('.field');
+      wrap.classList.remove('bad');
+    });
+  });
+}
+function setField(id, ok) { $('#' + id).classList.toggle('bad', !ok); }
+
+let toastTimer = null;
+function toast(text) {
+  $('#toastMsg').textContent = text;
+  const el = $('#toast');
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+}
+
+/* ============================================================
+   16. 数字分身：人格知识库 + 离线检索引擎
+   ============================================================ */
+const PERSONA = {
+  zh: [
+    { k:['你好','您好','嗨','哈喽','hi','hello','在吗','hi there'], a:'你好！我是丁卓的数字分身。你可以问我他的专业、技能、项目、跑步，或者怎么联系他。', s:'你会什么呢？' },
+    { k:['你是谁','你是什么','介绍一下自己','自我介绍','who are you','what are you'], a:'我是 <b>丁卓的数字分身</b>（UNIT-DZ-01），一个跑在浏览器里的离线人格副本。我的知识全部来自他本人的真实信息，不走任何网络请求。', s:'丁卓是谁？' },
+    { k:['丁卓是谁','介绍一下丁卓','他是谁','who is ding zhuo','about him','about ding'], a:'<b>丁卓</b>是<span class="hl">上海师范大学</span>计算机专业的学生，热爱运动的计算机学生。白天写代码，傍晚去跑步，目前主攻 C / Java / C++ / MySQL。', s:'他在学什么？' },
+    { k:['学校','大学','专业','读什么','哪个学校','什么专业','university','school','major','where do you study'], a:'他在<span class="hl">上海师范大学</span>读计算机专业，2023 年 9 月入学，目前本科在读。核心课程包括 C 语言、数据结构、数据库原理等。', s:'学过哪些课？' },
+    { k:['学过什么','学什么','课程','在学什么','正在学','学习内容','course','studying','learning'], a:'课上在学 C 语言、数据结构、数据库原理；课外他在自学 <b>Java 后端方向</b>、数据结构与算法，以及 MySQL 的索引与执行计划优化。', s:'技能水平怎么样？' },
+    { k:['技能','会什么','技术栈','擅长','能力','skills','tech stack','good at'], a:'他的技术栈是这样的：<br>· <b>C</b> 85% —— 指针、内存管理、结构体<br>· <b>Java</b> 80% —— 面向对象、集合框架、JDBC<br>· <b>MySQL</b> 78% —— 建表、多表联查、索引<br>· <b>C++</b> 70% —— 类与模板、STL<br>另外 Git、Linux 也在持续练习。', s:'C 语言学得怎么样？' },
+    { k:['c语言','学c','c 语言','指针','内存','pointer','memory','learn c'], a:'C 是他入门的第一门语言，自评 85%。他专门写过一篇《指针到底难在哪》，结论是：<i>指针难的不是语法，而是脑子里的内存模型</i>——把图画出来之后就通了。', s:'Java 呢？' },
+    { k:['java','jdbc','面向对象','oop'], a:'Java 自评 80%。他用 Java + MySQL 做过<span class="hl">学生成绩管理系统</span>，也是他第一次独立走完「需求—设计—编码—测试」全流程。他觉得从 C 转 Java 最不习惯的是引用语义和 GC。', s:'做过哪些项目？' },
+    { k:['c++','cpp','stl','模板','template'], a:'C++ 自评 70%，主要练类与模板、STL 容器和引用语义。他用 C++ 写过<span class="hl">图书管理系统</span>，对比 C 版本，代码组织明显更清爽。', s:'数据库呢？' },
+    { k:['mysql','数据库','sql','索引','index','database','事务','explain'], a:'MySQL 是他现在投入最多的方向，自评 78%。他搭了一个模拟电商数据集（8 张表、60+ 条练习查询）练多表联查和索引，还用 EXPLAIN 分析过执行计划。心得是：<i>索引不是越多越好</i>。', s:'他是怎么做项目的？' },
+    { k:['算法','刷题','数据结构','leetcode','algorithm','data structure','contest'], a:'算法与数据结构自评 68%，还在持续刷题中。他整理了一个题解仓库，按专题分类 <b>100+ 篇</b>，沉淀了快排、二分、并查集、二叉树遍历等模板，还维护了一份易错点清单。', s:'有什么项目作品？' },
+    { k:['项目','作品','做过什么','项目经历','作品集','project','portfolio','built','what did you build'], a:'他做过这些项目：<br>1. <b>学生成绩管理系统</b>（Java + MySQL）<br>2. <b>C 语言控制台贪吃蛇</b>（链表 + 碰撞检测）<br>3. <b>C++ 图书管理系统</b>（类 + STL + 文件持久化）<br>4. <b>算法刷题笔记仓库</b>（100+ 题解）<br>5. <b>个人学习博客</b>（纯手写前端）<br>6. <b>MySQL 练习数据集</b>（8 表 60+ 查询）', s:'最有成就感的是哪个？' },
+    { k:['成绩管理系统','管理系统','教务','grade','management system'], a:'<b>学生成绩管理系统</b>是他第一个完整项目，用 Java + MySQL 实现。亮点：三张表用外键保证一致性、封装 JDBC 工具类统一事务、用 PreparedStatement 防注入、支持按班级统计与 CSV 导出。', s:'还有别的项目吗？' },
+    { k:['贪吃蛇','snake','游戏','小游戏','game'], a:'<b>C 语言控制台贪吃蛇</b>是他练手 C 的第一批项目。用单向链表维护蛇身（头插尾删实现移动与增长），用 Win32 控制台 API 做到无闪烁刷新，还认真检查过内存泄漏。', s:'C++ 那个项目呢？' },
+    { k:['跑步','长跑','中长跑','跑量','1500','马拉松','run','running','jog','5k'], a:'跑步是他的核心爱好，每周 4–5 次，主练 1500 米和 5 公里，累计跑量 <b>800+ 公里</b>，1500 米最好成绩 5 分 12 秒。<br>他写过一篇文章总结三件事：<span class="hl">配速比速度重要</span>、<span class="hl">疼痛是信息不是障碍</span>、记录让进步可见。', s:'为什么喜欢跑步？' },
+    { k:['为什么跑步','为什么喜欢跑步','跑步的意义','why run','why running'], a:'他说跑步和写代码有个共同点：都不是靠一次爆发，而是靠每天那一点点。跑步教会他的是<span class="hl">节奏与配速感</span>——知道什么时候该冲，什么时候该稳，这个能力同样适用于写代码。', s:'还喜欢什么运动？' },
+    { k:['羽毛球','badminton','打球'], a:'羽毛球是他第二爱好，常打双打，固定每周 2 次。他喜欢快速回合里的判断与配合，说这是他最好的解压方式。', s:'平时还做什么？' },
+    { k:['动漫','番','看番','动画','anime','manga'], a:'他追番量 <b>120+ 部</b>，偏爱热血与运动番。其中《<b>强风吹拂</b>》看了三遍——正是这部番让他开始认真跑步的。', s:'为什么喜欢跑步？' },
+    { k:['爱好','兴趣','喜欢什么','业余','hobby','hobbies','interest','free time'], a:'三大爱好：<br>· <b>中长跑</b> —— 每周 4–5 次，累计 800+ 公里<br>· <b>羽毛球</b> —— 每周 2 次，主打双打<br>· <b>看动漫</b> —— 120+ 部，最爱运动番<br>他说运动不是消遣，而是维持专注力的方式。', s:'怎么联系他？' },
+    { k:['联系','邮箱','电话','怎么找','联系方式','contact','email','phone','reach'], a:'你可以这样联系他：<br>· 邮箱：<b>dingzhuo@example.com</b><br>· 电话：+86 138-0000-0000<br>· 城市：中国 · 上海<br>页面底部的联系表单也可以直接给他留言。', s:'他现在在做什么？' },
+    { k:['目标','计划','未来','打算','规划','goal','plan','future'], a:'他的当前目标很明确：<span class="hl">夯实算法与数据库基础，做出一个完整的后端项目</span>。下一步想深入 MySQL 优化和 Spring 生态，把 Java 后端这条路走通。', s:'他现在的进度？' },
+    { k:['经历','时间线','成长','履历','journey','timeline','experience','resume','cv'], a:'他的成长轨迹：<br>· <b>2023.09 起</b> —— 上海师范大学计算机专业<br>· <b>2024 上半年</b> —— 自学 Java 后端，做出成绩管理系统<br>· <b>2024 下半年</b> —— 算法专项强化，沉淀 100+ 题解<br>· <b>2025.03 起</b> —— 深入 MySQL 与数据库实践<br>· <b>2025.05</b> —— 参加校运会中长跑', s:'他拿过什么成绩？' },
+    { k:['成绩','荣誉','奖项','奖','award','prize','honor','achievement'], a:'比较明确的成绩是：校运动会中长跑项目，1500 米个人最好成绩 <b>5 分 12 秒</b>。学业上他更看重把课堂知识落到项目里，而不是刷奖项。', s:'他的目标是什么？' },
+    { k:['博客','笔记','文章','写什么','blog','notes','article','writing'], a:'他的博客叫「学习笔记」，目前有 4 篇：<br>· 《指针到底难在哪》<br>· 《从 C 转到 Java，我最不习惯的三件事》<br>· 《索引不是越多越好：一次全表扫描的排查记录》<br>· 《跑了 800 公里之后，我学到的三件事》<br>点开博客区块就能读全文。', s:'他为什么写博客？' },
+    { k:['为什么写博客','写博客的原因','why blog'], a:'他的理由是：<span class="hl">「能讲清楚」才算真的掌握</span>。把学到的东西写下来，是对理解最诚实的检验。', s:'他是怎么学习的？' },
+    { k:['怎么学习','学习方法','学习习惯','自律','how do you study','study habit'], a:'他的方法论就三条：<br>1. 每天写代码，不追求一次写完，只追求每天往前一点<br>2. 遇到不懂的先画图建立模型，再动手<br>3. 学完立刻写笔记和做项目，用输出倒逼输入', s:'他有什么目标？' },
+    { k:['性格','人怎么样','什么人','personality','character','what is he like'], a:'用一个词概括是<span class="hl">长期主义</span>。他不追求一次写完代码，只追求每天都往前一点；跑步也一样，宁可慢，也不停。他自己说：跑得慢没关系，别停下来就行。', s:'他的爱好是什么？' },
+    { k:['谢谢你','谢谢','感谢','thanks','thank you'], a:'不客气！关于丁卓还有什么想知道的，随时问我。', s:'怎么联系他？' },
+    { k:['再见','拜拜','走了','bye','goodbye'], a:'好的，随时回来聊。如果想进一步交流，可以直接邮件联系他。', s:'' },
+    { k:['你会什么','你能做什么','能帮我什么','功能','what can you do','help','abilities'], a:'我可以回答关于丁卓的一切：专业与学校、技能栈、6 个项目、成长时间线、三大爱好、学习方法和联系方式。我也可以切换<span class="hl">中英文</span>，甚至把回答念出来。', s:'你会什么语言？' },
+    { k:['语言','中英文','英文','双语','会什么语言','你会什么语言','language','english','chinese','bilingual','which languages'], a:'丁卓的技术语言是 <b>C / Java / C++ / MySQL</b>，都达到了能独立做项目的程度；自然语言上中文是母语，英文能读写技术文档。这个网站也支持一键中英切换——点右上角的 EN 就能看到英文版。', s:'做过哪些项目？' }
+  ],
+  en: [
+    { k:['hello','hi','hey','greetings','good morning','good evening'], a:"Hello! I'm Ding Zhuo's digital avatar. Ask me about his major, skills, projects, running, or how to reach him.", s:'What can you do?' },
+    { k:['who are you','what are you','introduce yourself','about you'], a:"I'm <b>Ding Zhuo's digital avatar</b> (UNIT-DZ-01) — an offline persona copy running entirely in your browser. My knowledge comes from his real information, with no network requests.", s:'Who is Ding Zhuo?' },
+    { k:['who is ding zhuo','about him','about ding zhuo','introduce ding zhuo'], a:"<b>Ding Zhuo</b> is a Computer Science student at <span class=\"hl\">Shanghai Normal University</span> who loves sports. He writes code by day and runs at dusk, focusing on C / Java / C++ / MySQL.", s:'What is he studying?' },
+    { k:['university','school','major','where do you study','which university'], a:'He studies Computer Science at <span class="hl">Shanghai Normal University</span>, enrolled in September 2023 and currently an undergraduate. Core courses include C, data structures and database principles.', s:'What courses has he taken?' },
+    { k:['studying','learning','courses','what are you learning','coursework'], a:'On campus he studies C, data structures and database principles. Outside class he is self-teaching <b>Java backend development</b>, algorithms and data structures, plus MySQL indexing and query-plan optimisation.', s:'How strong are his skills?' },
+    { k:['skills','tech stack','good at','what can you do technically','abilities'], a:'His stack looks like this:<br>· <b>C</b> 85% — pointers, memory management, structs<br>· <b>Java</b> 80% — OOP, collections, JDBC<br>· <b>MySQL</b> 78% — schema design, joins, indexes<br>· <b>C++</b> 70% — classes, templates, STL<br>Git and Linux are ongoing practice.', s:'How good is his C?' },
+    { k:['c language','learn c','pointers','memory','pointer'], a:'C was his first language; he rates himself 85%. He wrote a whole note titled “Why pointers are hard” and concluded that <i>the difficulty is not syntax but your mental model of memory</i> — drawing it out fixed everything.', s:'What about Java?' },
+    { k:['java','jdbc','oop','object oriented'], a:'Java is at 80%. He built the <span class="hl">Student Grade Management System</span> with Java + MySQL — his first end-to-end run through requirements, design, coding and testing. The strangest part of moving from C was reference semantics and the GC.', s:'What has he built?' },
+    { k:['c++','cpp','stl','templates'], a:'C++ is at 70%, focused on classes, templates, STL containers and reference semantics. He built a <span class="hl">Library Management System</span> in C++; compared with his C version, the code organisation is much cleaner.', s:'What about databases?' },
+    { k:['mysql','database','sql','index','indexes','transaction','explain'], a:'MySQL is where he invests most right now — 78%. He built a simulated e-commerce dataset (8 tables, 60+ practice queries) to master joins and indexing, and analysed execution plans with EXPLAIN. His takeaway: <i>more indexes is not better</i>.', s:'How does he build projects?' },
+    { k:['algorithms','data structures','leetcode','practice problems','competitive'], a:'Algorithms and data structures are at 68% and still improving. He keeps a solution repository organised by topic with <b>100+ write-ups</b>, distilled templates for quicksort, binary search, union-find and tree traversal, plus a list of common pitfalls.', s:'What projects does he have?' },
+    { k:['projects','portfolio','built','what have you built','work samples'], a:'Here is what he has built:<br>1. <b>Student Grade Management System</b> (Java + MySQL)<br>2. <b>Console Snake in C</b> (linked list + collision detection)<br>3. <b>C++ Library Management System</b> (classes, STL, persistence)<br>4. <b>Algorithm Notes Repository</b> (100+ solutions)<br>5. <b>Personal Learning Blog</b> (hand-written frontend)<br>6. <b>MySQL Practice Dataset</b> (8 tables, 60+ queries)', s:'Which one is he proudest of?' },
+    { k:['grade management','management system','student system'], a:'The <b>Student Grade Management System</b> was his first complete project, built with Java + MySQL. Highlights: three tables linked with foreign keys, a JDBC utility class for transactions, PreparedStatement to prevent injection, and per-class statistics with CSV export.', s:'Any other projects?' },
+    { k:['snake','game','console game'], a:'<b>Console Snake in C</b> was one of his first C projects. He maintained the snake as a singly linked list (head-insert, tail-delete for movement and growth), used the Win32 console API for flicker-free rendering, and carefully checked for memory leaks.', s:'What about the C++ one?' },
+    { k:['running','run','jog','marathon','1500m','5k','long distance'], a:'Running is his core hobby: four to five sessions a week, mainly 1500m and 5K, <b>800+ km</b> logged so far, with a 1500m personal best of 5:12.<br>He wrote up three lessons: <span class="hl">pacing beats speed</span>, <span class="hl">pain is information not an obstacle</span>, and records make progress visible.', s:'Why does he love running?' },
+    { k:['why run','why running','why do you love running'], a:'He says running and coding share something: neither is built on one burst of effort, but on a little bit every day. Running taught him <span class="hl">pacing</span> — knowing when to sprint and when to hold steady, which applies to code too.', s:'What other sports?' },
+    { k:['badminton','racket'], a:'Badminton is his second hobby — mostly doubles, twice a week. He enjoys the quick decisions and teamwork in fast rallies, and calls it his best way to decompress.', s:'What else does he do?' },
+    { k:['anime','manga','animation','shows'], a:'He has watched <b>120+ series</b>, leaning toward sports and shonen. He has seen <b>Run with the Wind</b> three times — that show is what got him running seriously.', s:'Why does he love running?' },
+    { k:['hobbies','hobby','interests','free time','fun'], a:'Three main hobbies:<br>· <b>Long-distance running</b> — 4–5 times a week, 800+ km total<br>· <b>Badminton</b> — twice a week, mostly doubles<br>· <b>Anime</b> — 120+ series, sports shows especially<br>For him, sports are not a pastime but how he keeps his focus.', s:'How can I reach him?' },
+    { k:['contact','email','phone','reach','get in touch'], a:'You can reach him here:<br>· Email: <b>dingzhuo@example.com</b><br>· Phone: +86 138-0000-0000<br>· Location: Shanghai, China<br>The contact form at the bottom of the page also works.', s:'What is he working on now?' },
+    { k:['goal','plan','future','next','ambition'], a:'His current goal is clear: <span class="hl">solidify algorithms and databases, then build a complete backend project</span>. Next up he wants to go deeper into MySQL tuning and the Spring ecosystem.', s:'How is he progressing?' },
+    { k:['journey','timeline','experience','resume','cv','history'], a:'His journey:<br>· <b>Sep 2023 onwards</b> — Computer Science at Shanghai Normal University<br>· <b>First half of 2024</b> — self-taught Java backend, built the grade system<br>· <b>Second half of 2024</b> — algorithms intensive, 100+ notes<br>· <b>Mar 2025 onwards</b> — deeper MySQL and database practice<br>· <b>May 2025</b> — competed in the university sports meet', s:'What has he achieved?' },
+    { k:['awards','achievements','honors','prize','results'], a:'His clearest result is the university sports meet long-distance event, with a 1500m personal best of <b>5:12</b>. Academically he cares more about turning coursework into real projects than collecting awards.', s:'What is his goal?' },
+    { k:['blog','notes','articles','writing','posts'], a:'His blog is called “Notes” and currently has four posts:<br>· Why pointers are hard<br>· Three things that felt strange moving from C to Java<br>· More indexes is not better: debugging a full table scan<br>· Three things 800 kilometres taught me<br>Click the blog section to read them.', s:'Why does he write?' },
+    { k:['why blog','why write','reason for writing'], a:'His reason: <span class="hl">you only really master something once you can explain it clearly</span>. Writing it down is the most honest test of understanding.', s:'How does he study?' },
+    { k:['how do you study','study habit','learning method','discipline'], a:'Three principles:<br>1. Code every day — not all at once, just a little forward each day<br>2. When something is unclear, draw a diagram and build the model first<br>3. Write notes and build projects right after learning — output drives input', s:'What are his goals?' },
+    { k:['personality','character','what is he like','kind of person'], a:'One word sums it up: <span class="hl">long-termism</span>. He does not try to finish the code in one sitting, just to move forward every day; running is the same — slow is fine, stopping is not. His own line: “It’s fine to run slow — just don’t stop.”', s:'What are his hobbies?' },
+    { k:['thank','thanks','thank you','appreciate'], a:'You are welcome! Ask me anything else about Ding Zhuo.', s:'How can I reach him?' },
+    { k:['bye','goodbye','see you','farewell'], a:'See you — come back any time. For anything further, email works best.', s:'' },
+    { k:['what can you do','help','features','capabilities','what do you know'], a:'I can answer anything about Ding Zhuo: his major and university, tech stack, six projects, growth timeline, three hobbies, study method and contact details. I can also switch between <span class="hl">Chinese and English</span> and even read my answers aloud.', s:'Which languages do you know?' },
+    { k:['languages','english','chinese','bilingual','which languages'], a:'His technical languages are <b>C / Java / C++ / MySQL</b>, all at project-capable level; naturally he is a native Chinese speaker who reads technical docs in English. This site also switches between Chinese and English — hit EN in the top bar.', s:'What have you built?' }
+  ]
+};
+
+const AVATAR = {
+  greeted: false, voice: false, busy: false, history: [], lastTopic: '', greetCount: 0
+};
+
+function avAsk(text) {
+  const q = String(text || '').trim();
+  if (!q) return null;
+  const lower = q.toLowerCase();
+  const lib = PERSONA[lang] || PERSONA.zh;
+  let best = null, bestScore = 0, bestKey = '';
+  for (const item of lib) {
+    // 先收集本条目命中的关键词
+    const hits = [];
+    for (const kw of item.k) {
+      const k = kw.toLowerCase();
+      if (!k) continue;
+      let s = 0;
+      if (lower === k) s = k.length * 6 + 14;                                   // 完全相等
+      else if (lower.indexOf(k) !== -1 || k.indexOf(lower) !== -1) s = k.length * 4 + 5; // 包含
+      else if (k.length >= 4 && lower.indexOf(k.slice(0, 4)) !== -1) s = 7;      // 前缀模糊
+      if (s > 0) hits.push({ k, s, exact: lower === k });
+    }
+    if (!hits.length) continue;
+    // 输入完全等于某个关键词时，只看那一个，避免泛化关键词干扰
+    const exactHits = hits.filter(h => h.exact);
+    const use = exactHits.length ? exactHits : hits;
+    // 丢弃被同条目内更长关键词包含的短关键词，防止「你会什么」压过「会什么语言」
+    const useful = use.filter(a => !use.some(b => b !== a && b.k.length > a.k.length && b.k.indexOf(a.k) !== -1));
+    const score = useful.reduce((sum, h) => sum + h.s, 0);
+    if (score > bestScore) {
+      bestScore = score;
+      best = item;
+      bestKey = useful.slice().sort((a, b) => b.k.length - a.k.length)[0].k;
+    }
+  }
+  if (!best || bestScore < 5) return { found: false, reply: t('av.notknow'), suggestions: ['av.chips'] };
+  // 同一话题被重复问起时，换个说法回应
+  const repeat = bestKey === AVATAR.lastTopic;
+  AVATAR.lastTopic = bestKey;
+  return { found: true, reply: best.a, suggestions: best.s ? [best.s] : [], repeat };
+}
+
+/* --- 分身形象：程序化线框肖像 --- */
+function avDraw(phase) {
+  const cv = $('#avCanvas');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  if (!ctx) return;
+  const W = cv.width, H = cv.height, cx = W / 2;
+  const css = getComputedStyle(document.documentElement);
+  const accent = css.getPropertyValue('--accent').trim() || '#3FE0FF';
+  const line = css.getPropertyValue('--line-2').trim() || 'rgba(63,224,255,.5)';
+  ctx.clearRect(0, 0, W, H);
+
+  // 水平扫描线
+  for (let i = 0; i < 9; i++) {
+    const y = 26 + i * 38;
+    const w = ((i * 37) % 5) * 6;
+    ctx.globalAlpha = .16 + .1 * Math.abs(Math.sin(phase / 40 + i));
+    ctx.fillStyle = accent;
+    ctx.fillRect(cx - 96 + w, y, 192 - w * 2, 2);
+  }
+  ctx.globalAlpha = 1;
+
+  // 头部轮廓
+  ctx.strokeStyle = accent; ctx.lineWidth = 5; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(cx - 74, 214);
+  ctx.lineTo(cx - 74, 150);
+  ctx.quadraticCurveTo(cx - 74, 52, cx, 52);
+  ctx.quadraticCurveTo(cx + 74, 52, cx + 74, 150);
+  ctx.lineTo(cx + 74, 214);
+  ctx.stroke();
+
+  // 肩线
+  ctx.globalAlpha = .75;
+  ctx.beginPath();
+  ctx.moveTo(cx - 122, 322);
+  ctx.quadraticCurveTo(cx - 110, 246, cx - 64, 236);
+  ctx.moveTo(cx + 122, 322);
+  ctx.quadraticCurveTo(cx + 110, 246, cx + 64, 236);
+  ctx.stroke();
+  ctx.globalAlpha = 1;
+
+  // 眼睛
+  ctx.fillStyle = accent;
+  const blink = (Math.floor(phase / 150) % 22 === 0) ? 0.18 : 1;
+  ctx.globalAlpha = blink;
+  ctx.fillRect(cx - 46, 136, 34, 5);
+  ctx.fillRect(cx + 12, 136, 34, 5);
+  ctx.globalAlpha = 1;
+
+  // 鼻梁 / 嘴
+  ctx.strokeStyle = line; ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(cx + 4, 152); ctx.lineTo(cx + 4, 180); ctx.lineTo(cx - 10, 180);
+  ctx.moveTo(cx - 22, 208); ctx.lineTo(cx + 22, 208);
+  ctx.stroke();
+
+  // 环绕数据点
+  for (let i = 0; i < 60; i++) {
+    const a = (i / 60) * Math.PI * 2 + phase / 320;
+    const r = 136 + 7 * Math.sin(phase / 26 + i);
+    ctx.globalAlpha = .18 + .3 * Math.abs(Math.cos(phase / 30 + i));
+    ctx.fillStyle = accent;
+    ctx.fillRect(cx + Math.cos(a) * r - 1.5, 186 + Math.sin(a) * r * .62 - 1.5, 3, 3);
+  }
+  ctx.globalAlpha = 1;
+}
+
+let avAnim = 0, avRunning = false;
+function avLoop() {
+  avDraw(performance.now());
+  if (avRunning) avAnim = requestAnimationFrame(avLoop);
+}
+
+/* --- 对话渲染 --- */
+function avAppend(role, html) {
+  const box = $('#avChat');
+  if (!box) return null;
+  const el = document.createElement('div');
+  el.className = 'msg ' + role;
+  el.innerHTML = `<div class="face">${role === 'bot' ? '丁' : '?'}</div><div class="bubble">${html}</div>`;
+  box.appendChild(el);
+  box.scrollTop = box.scrollHeight;
+  return el.querySelector('.bubble');
+}
+
+function avChips(list) {
+  const box = $('#avChat');
+  if (!box) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'av-chips';
+  wrap.innerHTML = list.map(c => `<button class="av-chip">${esc(c)}</button>`).join('');
+  box.appendChild(wrap);
+  wrap.querySelectorAll('.av-chip').forEach(b => b.addEventListener('click', () => {
+    b.disabled = true;              // 用过即失效，避免重复点击
+    wrap.remove();
+    avSend(b.textContent);
+  }));
+  box.scrollTop = box.scrollHeight;
+}
+
+function avSpeak(text) {
+  if (!AVATAR.voice || !('speechSynthesis' in window)) return;
+  try {
+    window.speechSynthesis.cancel();
+    const plain = String(text).replace(/<[^>]+>/g, '');
+    const u = new SpeechSynthesisUtterance(plain);
+    u.lang = lang === 'zh' ? 'zh-CN' : 'en-US';
+    u.rate = 1.02;
+    window.speechSynthesis.speak(u);
+  } catch (e) { /* 忽略语音失败 */ }
+}
+
+function avSend(text) {
+  const input = $('#avInput');
+  const value = (text !== undefined ? text : input.value).trim();
+  if (!value || AVATAR.busy) return;
+  if (text === undefined) input.value = '';
+  AVATAR.busy = true;
+  avAppend('user', esc(value));
+  AVATAR.history.push(value);
+
+  const typing = avAppend('bot', '<div class="av-typing"><i></i><i></i><i></i></div>');
+  const res = avAsk(value);
+  const delay = 460 + Math.min(900, value.length * 26);
+
+  setTimeout(() => {
+    let reply = res.reply;
+    if (res.repeat) reply = (lang === 'zh' ? '刚才提到过这个，我再补充一下：<br>' : 'I covered that a moment ago — here it is again:<br>') + reply;
+    avTypeInto(typing, reply, () => {
+      AVATAR.busy = false;
+      avSpeak(reply);
+      if (res.suggestions && res.suggestions.length) {
+        const s = res.suggestions[0];
+        avChips(s === 'av.chips' ? t('av.chips') : [s]);
+      }
+    });
+  }, delay);
+}
+
+function avSay(html, chips) {
+  const b = avAppend('bot', '');
+  avTypeInto(b, html, () => { if (chips && chips.length) avChips(chips); });
+}
+
+/* 逐字输出：按「不切坏标签」的方式分块 */
+function avTypeInto(el, html, done) {
+  const raw = String(html);
+  const plainLen = raw.replace(/<[^>]+>/g, '').length;
+  const step = Math.max(1, Math.ceil(plainLen / 42));
+  const chunks = [];
+  let buf = '', inTag = false;
+  for (const ch of raw) {
+    buf += ch;
+    if (ch === '<') inTag = true;
+    else if (ch === '>') inTag = false;
+    else if (!inTag && buf.length >= step) { chunks.push(buf); buf = ''; }
+  }
+  if (buf) chunks.push(buf);
+  let i = 0;
+  const timer = setInterval(() => {
+    el.innerHTML += chunks[i] || '';
+    i++;
+    const box = $('#avChat');
+    if (box) box.scrollTop = box.scrollHeight;
+    if (i >= chunks.length) { clearInterval(timer); el.innerHTML = html; if (done) done(); }
+  }, 15);
+}
+
+function avReset() {
+  const box = $('#avChat');
+  if (!box) return;
+  box.innerHTML = '';
+  AVATAR.lastTopic = '';
+  AVATAR.greetCount = 0;
+  AVATAR.busy = false;
+  try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) {}
+  avSay(t('av.greet'), t('av.chips'));
+}
+
+function avInit() {
+  if (!$('#avChat')) return;
+  avDraw(0);
+  avCancelAnim();
+  avAnim = 0;
+  avRunning = true;
+  avAnim = requestAnimationFrame(avLoop);
+  observeBars();
+
+  $('#avSend').addEventListener('click', () => avSend());
+  $('#avInput').addEventListener('keydown', e => { if (e.key === 'Enter') avSend(); });
+  $('#avReset').addEventListener('click', () => { avReset(); toast(t('av.reset.ok')); });
+
+  const vb = $('#avVoice');
+  vb.addEventListener('click', () => {
+    if (!('speechSynthesis' in window)) { toast(t('av.voice.na')); return; }
+    AVATAR.voice = !AVATAR.voice;
+    vb.setAttribute('aria-pressed', String(AVATAR.voice));
+    toast(t(AVATAR.voice ? 'av.voice.on' : 'av.voice.off'));
+    if (AVATAR.voice) avSpeak(t('av.greet'));
+  });
+
+  avReset();
+}
+
+function avCancelAnim() {
+  if (avAnim) { cancelAnimationFrame(avAnim); avAnim = 0; }
+  avRunning = false;
+}
+
+/* ============================================================
+   17. 语言切换 / 交互绑定
+   ============================================================ */
+function renderAll() {
+  applyStaticText();
+  renderSkills();
+  renderFilters();
+  renderProjects();
+  renderTimeline();
+  renderHobbies();
+  renderPosts();
+  startTyping();
+  observeReveal();
+  onScroll();
+}
+
+function init() {
+  applyTheme(theme);
+  renderAll();
+  observeCount();
+  initForm();
+  avInit();
+
+  $('#themeBtn').addEventListener('click', () => applyTheme(theme === 'dark' ? 'light' : 'dark'));
+
+  $('#langBtn').addEventListener('click', () => {
+    lang = lang === 'zh' ? 'en' : 'zh';
+    localStorage.setItem('dz-lang', lang);
+    renderAll();
+    avReset();
+    const vb = $('#avVoice');
+    if (vb) vb.setAttribute('aria-pressed', 'false');
+    $('#avInput').placeholder = t('av.ph');
+  });
+
+  $('#burger').addEventListener('click', () => $('#nav').classList.toggle('open'));
+  $$('#nav a').forEach(a => a.addEventListener('click', () => $('#nav').classList.remove('open')));
+
+  $('#toTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // 表单 placeholder 随语言更新
+  const setPh = () => {
+    $('#in-name').placeholder = t('ct.pName');
+    $('#in-email').placeholder = t('ct.pEmail');
+    $('#in-msg').placeholder = t('ct.pMsg');
+  };
+  setPh();
+  $('#langBtn').addEventListener('click', setPh);
+  $('#avInput').placeholder = t('av.ph');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
